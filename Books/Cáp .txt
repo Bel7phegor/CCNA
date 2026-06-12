@@ -1,0 +1,16 @@
+Cáp 
+- Cáp đồng 
+- UDP và STP (chống nhiễu điện từ) 
+- Cáp thẳng (straight-through) Và cáp chéo (Cross-over) 
+ + Chuẩn T-568B (TCam-C-TLục-XLá-TXLá-Lục-TNâu-Nâu)
+ + Chuẩn T-568A (TLục-Lục-TCam-XLá-TXLá-Cam-TNâu-Nâu)
+ + Nếu 2 đầu cùng chuẩn => cáp thẳng, khác chuẩn cáp chéo
+ + Đầu cáp RJ-45 
+ + Cáp thẳng và cáp chéo chỉ sử dụng tín hiệu ở chân 1,2,3,6, các chân còn lại chỉ khi sử dụng cấp nguồn  BOE thì mới cần tới 
+ + Khi nào sử dụng cáp thẳng và chéo 
+  - Chia 2 nhóm 
+   + Nhóm 1: (HUB, SWITCH)
+   + Nhóm 2: Các thiết bị còn lại  
+   + Các thiết bị cùng trong 1 nhóm thì sử dụng cáp chéo, khác nhóm sử dụng cáp thẳng 
+
+Chế độ dòng lệnh của Router 
