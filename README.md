@@ -1,10 +1,28 @@
 # 1. Mạng cơ bản 
 - 2 Thiết bị có thể chia sẻ file và móc nối được với nhau thì đã được gọi là hệ thống mạng rồi
 ## 1.1. Các đặc điểm của 1 hệ thống mạng 
+- Khi thiết kế/đánh giá 1 hệ thống mạng, cần quan tâm đến các đặc điểm sau:
+	- **Topology (Sơ đồ hình học)**: cách bố trí vật lý (Physical Topology - dây cáp, thiết bị đặt ở đâu) và cách bố trí logic (Logical Topology - luồng dữ liệu di chuyển như thế nào) của hệ thống mạng
+	- **Speed (Tốc độ)**: băng thông tối đa mà hệ thống mạng có thể đáp ứng được
+	- **Cost (Chi phí)**: chi phí đầu tư thiết bị, hạ tầng, đường truyền
+	- **Security (Bảo mật)**: khả năng chống lại các truy cập trái phép, tấn công mạng
+	- **Availability (Tính sẵn sàng)**: khả năng hệ thống luôn sẵn sàng phục vụ, thường đo bằng tỷ lệ % thời gian hoạt động (uptime)
+	- **Scalability (Khả năng mở rộng)**: khả năng hệ thống mạng dễ dàng mở rộng thêm khi có nhu cầu tăng trưởng (thêm thiết bị, thêm người dùng) mà không phải thiết kế lại từ đầu
+	- **Reliability (Độ tin cậy)**: khả năng hệ thống hoạt động ổn định, ít xảy ra sự cố, hoặc nếu có sự cố thì có khả năng phục hồi nhanh (thường gắn liền với các cơ chế dự phòng - redundancy)
+## 1.2. Phân loại mạng theo quy mô địa lý
+- **LAN (Local Area Network)**: mạng cục bộ, phạm vi nhỏ như 1 tòa nhà, 1 văn phòng, tốc độ cao, chi phí đầu tư thấp, thường do 1 tổ chức tự quản lý
+- **WAN (Wide Area Network)**: mạng diện rộng, kết nối nhiều mạng LAN ở cách xa nhau về mặt địa lý (khác thành phố, khác quốc gia), thường phải thuê đường truyền từ nhà cung cấp dịch vụ (ISP), tốc độ thấp hơn LAN và chi phí cao hơn
+- **MAN (Metropolitan Area Network)**: mạng quy mô đô thị, phạm vi lớn hơn LAN nhưng nhỏ hơn WAN, thường trong phạm vi 1 thành phố
+- **PAN (Personal Area Network)**: mạng cá nhân, phạm vi rất nhỏ như kết nối giữa điện thoại với tai nghe qua Bluetooth
+## 1.3. Vai trò thiết bị trong mô hình mạng
+- **Client-Server**: các máy Client gửi yêu cầu đến 1 máy Server tập trung để lấy dữ liệu hoặc dịch vụ, mô hình phổ biến trong doanh nghiệp vì dễ quản lý tập trung
+- **Peer-to-Peer (P2P)**: các máy tính có vai trò ngang hàng nhau, không có máy nào giữ vai trò trung tâm cố định, mỗi máy vừa có thể là Client vừa có thể là Server, phù hợp cho hệ thống mạng nhỏ, ít máy tính
 
 # 2. Mô hình OSI và TCP/IP
 ## 2.1. OSI
-### 2.1.1. Lớp application
+- Mô hình OSI (Open Systems Interconnection) là mô hình tham chiếu gồm **7 tầng**, mô tả cách dữ liệu được xử lý và truyền đi giữa các thiết bị trong hệ thống mạng, mỗi tầng chỉ giao tiếp trực tiếp với tầng ngay trên và ngay dưới nó
+- Thứ tự 7 tầng từ trên xuống: **Application (7) – Presentation (6) – Session (5) – Transport (4) – Network (3) – Data Link (2) – Physical (1)**
+### 2.1.1. Lớp Application (Tầng 7)
 - Tiếp xúc thường xuyên nhất tiếp xúc thông qua các ứng dụng, chrome, mail out look 
 - Các giao thức: 
 	- SMTP: dùng để gửi mail tới server 
@@ -16,6 +34,36 @@
     	- FTP Server
 	- HTTP, HTTPS:
     ![alt text](Images/image.png)
+	- Ngoài ra còn có các giao thức khác cũng hoạt động ở tầng này: `DNS` (phân giải tên miền thành địa chỉ IP), `DHCP` (cấp phát IP tự động), `Telnet/SSH` (truy cập từ xa)
+### 2.1.2. Lớp Presentation (Tầng 6)
+- Chịu trách nhiệm **định dạng, mã hóa (encryption) và nén (compression)** dữ liệu để tầng Application phía bên nhận có thể hiểu được đúng định dạng dữ liệu mà bên gửi đã gửi đi
+- Các chuẩn định dạng phổ biến ở tầng này: `JPEG, GIF, PNG` (hình ảnh), `MP3, MPEG` (âm thanh/video), `ASCII` (văn bản)
+- Các giao thức bảo mật như `SSL/TLS` cũng hoạt động chủ yếu ở tầng này để mã hóa dữ liệu trước khi truyền đi (VD: HTTPS = HTTP + TLS)
+### 2.1.3. Lớp Session (Tầng 5)
+- Chịu trách nhiệm **thiết lập, duy trì và kết thúc phiên làm việc (session)** giữa 2 ứng dụng đang giao tiếp với nhau, đảm bảo dữ liệu của các phiên làm việc khác nhau không bị lẫn lộn vào nhau
+- Ví dụ: khi mở nhiều tab trình duyệt để đăng nhập nhiều tài khoản khác nhau trên cùng 1 website, tầng Session giúp phân biệt và duy trì trạng thái đăng nhập riêng biệt cho từng phiên
+### 2.1.4. Lớp Transport (Tầng 4)
+- Chịu trách nhiệm đảm bảo quá trình **truyền dữ liệu tin cậy từ đầu cuối đến đầu cuối (end-to-end)**, thực hiện phân mảnh dữ liệu (segmentation), điều khiển luồng (flow control) và báo nhận (acknowledgment)
+- 2 giao thức chính hoạt động ở tầng này: `TCP` (tin cậy, hướng kết nối) và `UDP` (nhanh, không hướng kết nối) — sẽ được trình bày kỹ ở mục 2.3 và 2.4
+- Đơn vị dữ liệu ở tầng này gọi là `Segment`
+### 2.1.5. Lớp Network (Tầng 3)
+- Chịu trách nhiệm **định tuyến (routing)** dữ liệu để tìm ra đường đi tốt nhất từ nguồn đến đích khi 2 thiết bị không nằm cùng 1 mạng cục bộ, dựa vào **địa chỉ IP** (địa chỉ logic)
+- Thiết bị hoạt động chủ yếu ở tầng này: **Router**
+- Giao thức tiêu biểu: `IP (IPv4/IPv6)`, `ICMP`, các giao thức định tuyến như `RIP, OSPF, EIGRP, BGP`
+- Đơn vị dữ liệu ở tầng này gọi là `Packet`
+### 2.1.6. Lớp Data Link (Tầng 2)
+- Chịu trách nhiệm đóng gói dữ liệu thành `Frame`, gắn địa chỉ **MAC** (địa chỉ vật lý) để truyền dữ liệu trong phạm vi 1 mạng cục bộ (LAN), đồng thời kiểm tra lỗi ở mức cơ bản trong quá trình truyền
+- Thiết bị hoạt động chủ yếu ở tầng này: **Switch**
+- Tầng này được chia làm 2 lớp con: `LLC (Logical Link Control)` chịu trách nhiệm giao tiếp lên tầng Network phía trên, và `MAC (Media Access Control)` chịu trách nhiệm quy định cách truy cập đường truyền vật lý và gắn địa chỉ MAC
+- Đơn vị dữ liệu ở tầng này gọi là `Frame`
+### 2.1.7. Lớp Physical (Tầng 1)
+- Chịu trách nhiệm truyền **tín hiệu vật lý** (điện, ánh sáng, sóng radio) qua môi trường truyền dẫn thực tế như cáp đồng, cáp quang, sóng không dây
+- Thiết bị hoạt động chủ yếu ở tầng này: **Hub, cáp mạng, đầu nối (connector), repeater**
+- Đơn vị dữ liệu ở tầng này gọi là `Bit`
+### 2.1.8. Quá trình đóng gói dữ liệu (Encapsulation) và mở gói (De-encapsulation)
+- **Encapsulation**: khi dữ liệu đi từ tầng Application xuống tầng Physical (ở máy gửi), mỗi tầng sẽ gắn thêm phần `Header` (và có thể cả `Trailer`) riêng của tầng đó vào dữ liệu, giống như việc gói 1 món đồ vào nhiều lớp bao bì trước khi gửi đi
+- **De-encapsulation**: khi dữ liệu đến máy nhận, quá trình diễn ra ngược lại — dữ liệu đi từ tầng Physical lên tầng Application, mỗi tầng sẽ bóc bỏ phần Header/Trailer tương ứng của tầng đó ra để lấy được dữ liệu gốc ban đầu
+- Đây chính là lý do vì sao đơn vị dữ liệu có tên gọi khác nhau ở từng tầng: `Data (tầng Application/Presentation/Session) -> Segment (tầng Transport) -> Packet (tầng Network) -> Frame (tầng Data Link) -> Bit (tầng Physical)`
 ## 2.2. TCP/IP
 ![alt text](Images/image-1.png)
 - Chỉ có 4 phân lớp như ảnh trên
@@ -83,7 +131,12 @@ L3: packet (data,ip)
 #### 2.4.2.2. Silding Windowing
 - Khi nào 2 thiết bị tự động điều chỉnh Windown size: khi hệ thống mạng bị nghẽn thì sẽ tự động tăng giảm giá trị này tùy vào hệ thống mạng hiện tại dựa vào Silding Windowing
 - Nếu ở 2 PC 1 bên có ws =3 và 1 bên có ws=2 thì trong quá trình truyền bên nhận chỉ nhận được 2 segment và báo ack = 3 kèm theo ws = 2 tiếp đến máy gửi sẽ điều chỉnh ws theo máy nhận và tiếp tục truyền dữ liệu.
-- Window size thường tăng theo cấp số nhân
+- Cần phân biệt rõ 2 loại "window size" trong TCP:
+	- **Receive Window (rwnd)**: là giá trị Window size được 2 bên **thỏa thuận trong quá trình bắt tay 3 bước**, phản ánh khả năng bộ nhớ đệm (buffer) của bên nhận, đây chính là cơ chế `Flow Control` đã nói ở mục 2.4.2.1 và ví dụ ws=3, ws=2 ở trên — giá trị này thay đổi tùy theo dung lượng buffer còn trống của bên nhận chứ không tự tăng theo cấp số nhân
+	- **Congestion Window (cwnd)**: đây mới là giá trị **tăng theo cấp số nhân**, thuộc cơ chế `Congestion Control` của TCP (khác với Flow Control), hoạt động qua 2 giai đoạn:
+		- `Slow Start`: cwnd tăng gấp đôi sau mỗi vòng RTT nhận được ACK thành công (tăng theo cấp số nhân) cho đến khi đạt ngưỡng `ssthresh`
+		- `Congestion Avoidance`: sau khi vượt ngưỡng, cwnd chỉ tăng tuyến tính (mỗi vòng +1 segment) để tránh gây nghẽn mạng
+	- Kích thước cửa sổ gửi thực tế = `min(rwnd, cwnd)` — nghĩa là 2 bên vừa bị giới hạn bởi khả năng buffer của bên nhận, vừa bị giới hạn bởi tình trạng nghẽn của đường truyền
 #### 2.4.2.3. MAC vs IP add
 - Trên 1 thiết bị ta có thể cài đặt rất nhiều dịch vụ. HTTP, FTP,... Khi mà gói tin muốn truy cập tới dịch vụ nào thì nó sẽ căng cứ đến cái port đích
 - 1-1023: Đã được định danh cho các dịch vụ trước rồi VD: port 80 http,...
@@ -98,6 +151,9 @@ L3: packet (data,ip)
 - Chứa Port nguồn và Port Đích
 # 3. Ethernet LAN
 ## 3.1. Local Area Network (LAN)
+- LAN (Local Area Network) là hệ thống mạng cục bộ, kết nối các thiết bị trong 1 phạm vi địa lý nhỏ (1 phòng, 1 tòa nhà, 1 khuôn viên công ty)
+- Đặc điểm: tốc độ truyền dữ liệu cao, độ trễ thấp, thuộc quyền sở hữu và quản lý của 1 tổ chức duy nhất (không phải thuê từ ISP như WAN)
+- Công nghệ nền tảng phổ biến nhất để xây dựng mạng LAN hiện nay là **Ethernet**, hoạt động dựa trên 2 thiết bị chính: **Switch** (kết nối các thiết bị trong cùng 1 mạng) và **Router** (kết nối và định tuyến giữa các mạng LAN khác nhau)
 ## 3.2. MAC (Hexa)
 - Các thiết bị tham gia cùng 1 mạng LAN được định danh với khái niệm là địa chỉ MAC 
 - Mỗi máy tính muốn tham gia vòa mạng LAN cần phải có card mạng và trên mỗi card mạng thì có 1 địa chỉ MAC riêng (12 số hexa và được rút gọn thành 4 số nhị phân)
@@ -158,16 +214,16 @@ L3: packet (data,ip)
   - VD: 6400.6A: Card mạng này do hãng nào sản xuất ra 
 ## 3.9. Các tiêu chuẩn công nghệ ethernet LAN
 ### 3.9.1. Ethernet
-- IEEE 802.3 10BASE-TX
+- IEEE 802.3, chuẩn `10BASE-T`, tốc độ 10 Mbps, chạy trên cáp đồng UTP
 ### 3.9.2. Fast Ethernet
-- IEEE 802.3u, 100BASE-TX
-- IEEE 802.3
+- IEEE 802.3u, tốc độ 100 Mbps, gồm `100BASE-TX` (cáp đồng) và `100BASE-FX` (cáp quang)
 ### 3.9.3. Gigabit Ethernet
-- IEEE 802.3u, 1000BASE-TX
-- IEEE 802.3x
-- IEEE 802.3ab
+- IEEE 802.3z, chuẩn `1000BASE-X`, tốc độ 1000 Mbps (1 Gbps), chạy trên cáp quang
+- IEEE 802.3ab, chuẩn `1000BASE-T`, tốc độ 1000 Mbps (1 Gbps), chạy trên cáp đồng UTP Cat5e trở lên
+- IEEE 802.3x: đây là chuẩn quy định cơ chế **Full Duplex và Flow Control (PAUSE frame)**, đi kèm hỗ trợ cho Gigabit Ethernet chứ không phải là 1 chuẩn tốc độ riêng
+- Tóm gọn theo tốc độ: 10 Mbps -> 802.3 (10BASE-T) | 100 Mbps -> 802.3u (100BASE-TX/FX) | 1000 Mbps -> 802.3z (cáp quang) & 802.3ab (cáp đồng)
 ## 3.10. Hub và Switch 
-- Cơ chế hoạt động của HUB 
+- Cơ chế hoạt động của HUB: Hub là thiết bị hoạt động ở tầng Physical (tầng 1), khi nhận được tín hiệu điện trên 1 port thì nó chỉ đơn giản khuếch đại tín hiệu đó lên rồi phát (broadcast) ra tất cả các port còn lại mà không hề đọc hay xử lý bất kỳ thông tin địa chỉ nào, hoạt động như 1 thiết bị khuếch đại tín hiệu thuần túy
 - So sanh với Switch và HUB
   - Switch là thiết bị lớp 2 vì nó có thể đọc vào L2 Header đọc vào cấu trúc Ethenet header dựa nào MAC nguồn và MAC đích đẩy cấu trúc frame vào chính xác port 
   - HUB là thiết bị lớp 1 vì nó 0 có khả năng đọc vào L2 Header đọc vào cấu trúc Ethenet header khi mà chúng nhận được frame và chúng hiểu rằng frame này có tín hiệu 0101 trên môi trường truyền và lúc này sẽ khuếch đại tín hiệu này lên và gửi ra tất cả các port trừ port nhận vào, mặc định là nó sẽ đẩy Broadcard nếu nó nhận được thông tin từ bất cứ đâu gây giảm hiệu năng hệ thống và vấn đề bảo mật
@@ -194,8 +250,10 @@ L3: packet (data,ip)
 	- mỗi Port của sw có 1 CD 
 	- Mỗi port của Router có 1 BD
 ### 3.10.2. Full Duplex (Switch)
-- Chúng có thể truyền và nhận dữ liệu đồng thời
-- Nên sử dụng
+- Chúng có thể truyền và nhận dữ liệu đồng thời cùng lúc trên cùng 1 kết nối mà không xảy ra đụng độ
+- Nên sử dụng Full Duplex thay vì Half Duplex vì tận dụng được tối đa băng thông của đường truyền theo cả 2 chiều (VD: đường truyền 100Mbps Full Duplex thực chất tương đương 100Mbps gửi + 100Mbps nhận đồng thời)
+- Vì mỗi thiết bị đều có đường truyền riêng (không dùng chung môi trường vật lý như HUB) nên **không xảy ra đụng độ**, do đó **không cần dùng đến CSMA/CD** khi hoạt động ở chế độ Full Duplex
+- Switch hiện đại mặc định hoạt động Full Duplex khi kết nối điểm-điểm (point-to-point) với 1 thiết bị khác qua cáp UTP, cơ chế `Auto-Negotiation` giúp 2 đầu cổng tự động thương lượng tốc độ (speed) và chế độ song công (duplex) phù hợp với nhau
 ## 3.11. Chuẩn cáp Ethernet LAN
 - Phân biệt cáp UTP và cáp chống nhiễu STP
 ### 3.11.1. Cáp đồng
@@ -222,6 +280,7 @@ L3: packet (data,ip)
 	- VD: sw - sw, rt - rt, rt - pc, pc - pc 
 	
 	![alt text](Images/image-34.png)
+- Quy tắc phân biệt cáp thẳng/cáp chéo ở trên đúng về mặt lý thuyết và vẫn còn giá trị khi thi lý thuyết hoặc gặp thiết bị đời cũ. Tuy nhiên trong thực tế hiện nay, hầu hết switch/router/NIC đời mới đều hỗ trợ tính năng **Auto-MDIX (Automatic Medium-Dependent Interface Crossover)**, giúp cổng mạng tự động nhận diện và đảo chiều cặp dây tín hiệu cho phù hợp bất kể cắm cáp thẳng hay cáp chéo. Vì vậy trên thực tế đa số trường hợp **không còn bắt buộc phải chọn đúng loại cáp** như quy tắc truyền thống nữa, nhưng vẫn nên hiểu và nắm quy tắc này vì đề thi CCNA vẫn thường hỏi.
 # 4. Địa chỉ IP 
 ## 4.1. IPv4
 - Cấu trúc `IPv4` chia thành 2 phần 
@@ -299,7 +358,47 @@ L3: packet (data,ip)
 ### 4.1.5. Địa chỉ Public và Private
 - Địa chỉ Public phải mua và được cấp từ nhà mạng
 	![alt text](Images/image-31.png)
+Các dải địa chỉ cụ thể theo chuẩn **RFC 1918** (rất hay bị hỏi trong đề thi CCNA):
+- **Địa chỉ Private (RFC 1918)** — không định tuyến được trên internet, chỉ dùng nội bộ, dùng chung cho nhiều tổ chức khác nhau mà không xung đột nhờ có NAT:
+  - Lớp A: `10.0.0.0 – 10.255.255.255` (`10.0.0.0/8`)
+  - Lớp B: `172.16.0.0 – 172.31.255.255` (`172.16.0.0/12`)
+  - Lớp C: `192.168.0.0 – 192.168.255.255` (`192.168.0.0/16`)
+- **Địa chỉ Public**: tất cả các dải còn lại (ngoài Private và các dải đặc biệt bên dưới), được IANA cấp phát duy nhất trên toàn cầu, định tuyến được trực tiếp trên internet
+- **Các dải đặc biệt khác cần nhớ**:
+  - `127.0.0.0/8`: dải **Loopback**, dùng để tự kiểm tra card mạng/hệ điều hành của chính thiết bị (thường dùng `127.0.0.1`)
+  - `169.254.0.0/16`: dải **APIPA (Automatic Private IP Addressing)**, hệ điều hành tự gán khi thiết bị không xin được IP từ DHCP Server, cho biết dấu hiệu lỗi cấp phát DHCP
+  - `0.0.0.0`: đại diện cho "toàn bộ địa chỉ chưa xác định", thường dùng trong default route
+  - `255.255.255.255`: địa chỉ Broadcast giới hạn (Limited Broadcast) trong phạm vi 1 mạng cục bộ
 ## 4.2. IPv6
+Kiến thức nền tảng về IPv6:
+- Lý do ra đời IPv6: địa chỉ IPv4 (32 bit, ~4.29 tỷ địa chỉ) đã cạn kiệt, IPv6 dùng **128 bit** nhị phân nên số lượng địa chỉ gần như vô hạn (2^128 địa chỉ)
+- Địa chỉ IPv6 được biểu diễn dưới dạng **8 nhóm số Hexa**, mỗi nhóm 16 bit, ngăn cách nhau bằng dấu `:`
+	- VD: `2001:0DB8:0000:0000:0000:0000:1234:5678`
+- Quy tắc rút gọn địa chỉ IPv6:
+	- Có thể bỏ các số **0** đứng đầu mỗi nhóm: `0DB8` -> `DB8`
+	- Nhiều nhóm số `0000` liên tiếp nhau có thể rút gọn thành `::` nhưng **chỉ được dùng 1 lần duy nhất** trong 1 địa chỉ để tránh nhập nhằng số lượng nhóm bị rút gọn
+	- VD: `2001:0DB8:0000:0000:0000:0000:1234:5678` -> `2001:DB8::1234:5678`
+### 4.2.1. Các loại địa chỉ IPv6
+- **Unicast**: định danh cho 1 giao diện duy nhất, gửi từ 1 nguồn đến 1 đích
+	- **Global Unicast Address (GUA)**: địa chỉ định tuyến được trên internet, tương đương địa chỉ Public của IPv4, thường bắt đầu bằng `2000::/3`
+	- **Link-Local Address (LLA)**: chỉ có hiệu lực trong phạm vi 1 đoạn mạng (link) cục bộ, không định tuyến qua router, dải `FE80::/10`, tự động được gán trên mỗi cổng khi bật IPv6
+	- **Unique Local Address (ULA)**: tương đương địa chỉ Private của IPv4, dùng nội bộ không định tuyến ra internet, dải `FC00::/7`
+- **Multicast**: gửi cho 1 nhóm thiết bị, dải `FF00::/8`, thay thế hoàn toàn cho Broadcast (IPv6 không có khái niệm Broadcast)
+- **Anycast**: 1 địa chỉ được gán cho nhiều thiết bị khác nhau, gói tin sẽ được gửi đến thiết bị **gần nhất** về mặt định tuyến
+### 4.2.2. Cơ chế cấp phát địa chỉ IPv6
+- **Static**: gán tay địa chỉ IPv6 cho từng thiết bị
+- **Stateless Address Autoconfiguration (SLAAC)**: thiết bị tự sinh ra địa chỉ IPv6 của mình dựa vào thông tin prefix mà Router quảng bá qua bản tin `RA (Router Advertisement)` kết hợp với địa chỉ MAC (EUI-64)
+- **DHCPv6**: tương tự như DHCP của IPv4, có thể cấp Stateful (đầy đủ thông tin) hoặc Stateless (chỉ cấp thêm DNS,... còn địa chỉ IP tự học qua SLAAC)
+### 4.2.3. Cấu hình IPv6 cơ bản trên Router Cisco
+```
+ipv6 unicast-routing
+int f0/0
+	ipv6 address 2001:DB8::1/64
+	ipv6 address FE80::1 link-local
+	no shut
+show ipv6 interface brief
+show ipv6 route
+```
 # 5. Router 
 ## 5.1. Cấu hình router cisco
 ### 5.1.1. Các câu lệnh
@@ -337,6 +436,7 @@ L3: packet (data,ip)
     	- `login`
 - MK Enable password:
 	- enable password
+	- `enable password` lưu mật khẩu ở dạng không mã hóa mạnh (chỉ mã hóa yếu khi bật `service password-encryption`) nên trong thực tế **không nên dùng**. Nên thay thế bằng lệnh `enable secret <mật khẩu>` vì mật khẩu được băm (hash) bằng MD5 (hoặc SCRYPT ở IOS mới) ngay khi cấu hình, an toàn hơn nhiều. Lưu ý: nếu cấu hình đồng thời cả `enable password` và `enable secret` thì Cisco IOS luôn **ưu tiên dùng `enable secret`**.
 - Tính năng tự đăng xuất Exec-Timeout: `exec-timeout 1 30 `(1 phút 30s)
 # 6. Giao thức CDP (Cisco Discovery Protocol)(Phát hiệt thiết bị láng giềng)
 - Xem các thiết bị láng giềng: `show cdp neighbors` 
@@ -433,6 +533,7 @@ L3: packet (data,ip)
 	show ip ssh 
 	show ssh
 	```
+- Giá trị `768` bit ở trên chỉ nên dùng để minh họa nhanh trong bài lab vì thiết bị cũ giới hạn tài nguyên. Trong thực tế triển khai, khóa RSA 768-bit được xem là **yếu, không đủ an toàn** và có nguy cơ bị bẻ khóa. Khuyến nghị hiện nay nên tạo khóa RSA tối thiểu **1024-bit**, và tốt nhất nên dùng **2048-bit** trở lên (`crypto key generate rsa modulus 2048`) để đảm bảo an toàn cho phiên SSH.
 # 9. Định tuyến
 ## 9.1. Định tuyến tĩnh (Static Route)
 - Đối với các dãy mạng khác nhau nhưng đều nằm cùng trên 1 con router thì không cần khai báo định tuyến tĩnh chỉ cần các thiết bị trong vùng mạng trỏ đúng tới cái default-gateway thì nó sẽ thông được với nhau 
@@ -547,6 +648,11 @@ L3: packet (data,ip)
 	- Trường hợp đường đi đên mạng gặp sự cố và sau 30s vẫn không nhận được thông tin định tuyến thì nó vẫn duy trì cái đường đi đó trong vòng 180s nữa kể từ lúc nhận được thông tin định tuyến từ router láng giềng gửi qua
 	- Sau khoảng 180s mà Router vẫn không nhận được thông tin định tuyến từ Router láng giềng thì nó sẽ tăng metric tối đa là 16 và tiếp tục quảng bá cái mạng này cho những con router khác biết ám chỉ mạng này đang gặp sự cố và nó sẽ duy trì trạng thái đó trong vòng 60s nữa và sau 240s thì chính thức xóa mạng đó khỏi thông tin định tuyến.
 	![alt text](Images/image-55.png)
+- Bộ Timer kinh điển của RIP gồm **4 loại**, cụ thể:
+	- **Update Timer (30s)**: định kỳ gửi toàn bộ bảng định tuyến cho router láng giềng
+	- **Invalid Timer (180s)**: nếu quá 180s không nhận được cập nhật về 1 route thì route đó được đánh dấu là `possibly down` (không xóa ngay)
+	- **Holddown Timer (180s)**: khi 1 route được đánh dấu `possibly down`, Router sẽ giữ nguyên route đó trong bảng định tuyến với trạng thái này trong 180s để chờ thông tin ổn định, đồng thời **không chấp nhận bất kỳ cập nhật nào có metric xấu hơn hoặc bằng** cho route này trong khoảng thời gian đó — đây là cơ chế quan trọng giúp chống loop tạm thời khi mạng có biến động
+	- **Flush Timer (240s)**: sau 240s tính từ lúc route bắt đầu không ổn định mà vẫn không phục hồi thì route đó chính thức bị xóa khỏi bảng định tuyến
 - RIPv1 và RIPv2
 	- RIPv2 ra đời để khắc phục nhược điểm của RIPv1 
 	- Những tb chạy RIPv2 không có khả năng tương thích với RIPv1 và các con router sẽ không học được route của nhau 
@@ -569,6 +675,7 @@ L3: packet (data,ip)
 	```
 	![alt text](Images/image-58.png)
 	- Quản bá default route: default -information originate trên con router biên kết nối trực tiếp với internet và quảng bá default route vào các tb bên trong nếu route biên mà bị gắt kết nối với internet thì ở bản định tuyến sẽ tự động xóa thông tin định tuyến
+- RIP vẫn là kiến thức nền tảng bắt buộc phải nắm cho kỳ thi CCNA (đại diện cho nhóm Distance Vector), nhưng trong triển khai hạ tầng mạng doanh nghiệp thực tế hiện nay **hầu như không còn ai sử dụng RIP** do hội tụ chậm, giới hạn 15 hop, chỉ dựa vào hop count nên không tối ưu. Thực tế các doanh nghiệp chủ yếu dùng **OSPF** (nội bộ, đa hãng), **EIGRP** (nội bộ, riêng hệ sinh thái Cisco) và **BGP** (giữa các nhà cung cấp dịch vụ/AS với nhau).
 #### 9.2.1.2. Link-State 
 - Giao thức phổ biến OSPF, EIGRP, IS-IS
 - Ưu điểm: Nếu muốn hệ thống mạng tương thích nhanh với những thay đổi có khả năng xuất hiện trên htm 
@@ -700,6 +807,19 @@ L3: packet (data,ip)
 	- Kiểm tra bgp: `show ip bgp summary`
 	
 # 10. ICPM
+Kiến thức nền tảng về ICMP:
+## 10.1. Khái niệm ICMP (Internet Control Message Protocol)
+- ICMP là giao thức thuộc lớp Network (L3), hoạt động cùng cấp với IP, dùng để `báo lỗi` và `chẩn đoán` tình trạng của quá trình truyền thông trên mạng chứ không dùng để truyền dữ liệu người dùng
+- ICMP không có khái niệm port nguồn/đích như TCP/UDP vì nó không phải giao thức tầng Transport
+## 10.2. Các bản tin ICMP phổ biến
+- **Echo Request / Echo Reply**: dùng trong lệnh `ping` để kiểm tra khả năng kết nối đến 1 thiết bị đích, đo thời gian phản hồi (RTT)
+- **Destination Unreachable**: báo cho máy gửi biết địa chỉ đích hoặc dịch vụ không thể truy cập được (host unreachable, network unreachable, port unreachable,...)
+- **Time Exceeded**: gửi về khi giá trị `TTL (Time To Live)` trong IP header giảm về 0 trước khi tới được đích, được sử dụng trong lệnh `traceroute`/`tracert` để dò đường đi (mỗi hop TTL giảm 1 đơn vị)
+- **Redirect**: Router thông báo cho PC biết có đường đi tốt hơn đến đích thông qua 1 gateway khác trong cùng mạng
+## 10.3. Lệnh kiểm tra trên Cisco
+- `ping <ip>`: kiểm tra kết nối tới thiết bị đích
+- `traceroute <ip>`: liệt kê từng chặng (hop) router mà gói tin đi qua để đến được đích, hữu ích khi cần xác định vị trí xảy ra sự cố trên đường truyền
+- `debug ip icmp`: theo dõi trực tiếp các bản tin ICMP đi qua thiết bị
 # 11. VLAN (Virtual LAN) ảo hóa Switch
 - Mỗi VLAN tương ứng như 1 switch vật lý, tất cả các phòng ban sẽ kết nối hết vào 1 vlan 
 - Nếu trong 1 Vlan nhận được 1 bảng tin `broadcast` thì tất cả cá port thuộc cùng vlan đo nhận được thôi nên mỗi vlan là 1 `broadcast domain`
@@ -746,6 +866,7 @@ L3: packet (data,ip)
 	- Đảm bảo database VLAN giữa các switch sẽ được đồng hóa với nhau để tránh lỗi 
 	- VTP domain: dạy vlan và đồng bộ hóa tên vlan, cần phải tham gia vào cùng 1 vtp domain: `vtp domain AnPhuc` và hoạt động ở chế độ `server` hoặc `client` hoặc `Transparent` 
 	![alt text](Images/image-69.png)
+- VTP (đặc biệt VTPv1/v2) tiềm ẩn rủi ro rất lớn trong triển khai thực tế: nếu gắn nhầm 1 switch mới (dù chưa cấu hình VLAN gì) vào hệ thống nhưng lại có **VTP revision number cao hơn** switch Server hiện tại, toàn bộ database VLAN của cả hệ thống có thể bị **ghi đè hoặc xóa sạch**, gây sập mạng diện rộng. Vì lý do này, nhiều tổ chức trong thực tế khuyến cáo: luôn để switch ở chế độ `vtp mode transparent` (không đồng bộ tự động) hoặc nếu bắt buộc dùng VTP thì nên dùng **VTPv3** (hỗ trợ đặt password xác thực domain + chỉ định rõ Primary Server) để tránh rủi ro nêu trên.
 ### 11.2.2. Định tuyến giữa các vlan 
 - Các vlan khác nhau muốn đi qua được với nhau thì phải đi qua router
 - Router on a Stick: Chỉ cần 1 cổng và tạo các cổng ảo để trỏ đén từng vlan
@@ -757,6 +878,25 @@ L3: packet (data,ip)
 			encapsulation dot1q 3 (vlan 3)
 			ip add 30.0.0.1 255.0.0.0
 		```
+
+## 11.3. Voice VLAN
+Voice VLAN là kiến thức quan trọng trong CCNA, cụ thể:
+- Là 1 VLAN riêng biệt dành cho lưu lượng thoại (điện thoại IP Phone), tách biệt với VLAN dữ liệu thông thường (Data VLAN) trên cùng 1 cổng switch
+- Lý do cần tách riêng: lưu lượng thoại (voice) rất nhạy cảm với độ trễ (delay/jitter) nên cần được ưu tiên QoS riêng so với lưu lượng dữ liệu bình thường
+- Mô hình triển khai: PC cắm vào cổng phía sau của IP Phone, còn IP Phone cắm vào switch; trên switch cùng 1 cổng vật lý sẽ gán 2 VLAN riêng: `Voice VLAN` cho điện thoại và `Access VLAN` cho PC
+	```
+	int f0/1
+		switchport mode access
+		switchport access vlan 10
+		switchport voice vlan 20
+	```
+## 11.4. Tấn công VLAN Hopping
+Kiến thức an toàn bảo mật liên quan VLAN, hay xuất hiện trong đề thi CCNA phần Security Fundamentals:
+- Là kỹ thuật tấn công cho phép 1 thiết bị ở VLAN này có thể gửi được lưu lượng sang 1 VLAN khác mà đáng lẽ nó không được phép truy cập, gồm 2 dạng phổ biến:
+	- **Switch Spoofing**: kẻ tấn công giả lập PC của mình thành switch để chủ động thương lượng trunk (thông qua DTP) với switch thật, sau khi trở thành trunk thì có thể truy cập được tất cả VLAN đi qua đường trunk đó
+		- Cách phòng chống: tắt DTP trên các cổng access bằng `switchport nonegotiate`, cấu hình cứng `switchport mode access` thay vì để tự thương lượng
+	- **Double Tagging**: kẻ tấn công gắn **2 lớp nhãn VLAN (2 lần dot1q tag)** lên frame gửi đi, lợi dụng cơ chế xử lý Native VLAN (switch bóc lớp nhãn ngoài cùng trùng Native VLAN rồi chuyển tiếp) khiến lớp nhãn còn lại (VLAN đích tấn công) bị lộ ra và được switch kế tiếp xử lý, giúp gói tin "nhảy" được sang VLAN khác dù ban đầu ở VLAN khác biệt
+		- Cách phòng chống: không dùng VLAN 1 làm Native VLAN mặc định, đổi Native VLAN sang 1 VLAN không sử dụng cho mục đích khác (VD: VLAN 999 dùng riêng làm Native VLAN "rỗng")
 
 # 12. Giao thức chống Loop STP
 ## 12.1. Mô hình thiết kế hạ tầng mạng 3 phân lớp
@@ -811,3 +951,363 @@ L3: packet (data,ip)
 - Port không nhận được bản tin hello sau 10 lần thì nó khẳng định đoạn mạng đó gặp sự cố và mở port block
 ### 12.4.4. Alternated Port(Block port)
 - Port dự phòng, cho phép dữ liệu đi qua 
+
+Tiếp tục hoàn chỉnh chủ đề chống Loop STP với các nội dung bên dưới.
+## 12.5. Các trạng thái cổng (Port State) của STP
+- Khi 1 port bật lên thì STP (802.1D) không chuyển ngay sang trạng thái forward mà phải trải qua các trạng thái trung gian để tránh loop tạm thời:
+	- **Blocking**: không gửi/nhận dữ liệu, chỉ lắng nghe bản tin BPDU (20s)
+	- **Listening**: bắt đầu tham gia vào quá trình bầu chọn Root Bridge/Root Port/Designated Port nhưng chưa học địa chỉ MAC, chưa chuyển tiếp dữ liệu (15s)
+	- **Learning**: bắt đầu học địa chỉ MAC vào bảng MAC Table nhưng vẫn chưa chuyển tiếp dữ liệu (15s)
+	- **Forwarding**: chuyển tiếp dữ liệu bình thường và học địa chỉ MAC
+	- **Disabled**: port bị tắt bằng tay (shutdown), không tham gia vào STP
+- Tổng thời gian hội tụ mặc định của STP (802.1D) là khoảng **50s** (20s Blocking + 15s Listening + 15s Learning) nên STP truyền thống khá chậm khi có thay đổi hạ tầng mạng
+## 12.6. BPDU (Bridge Protocol Data Unit)
+- BPDU là bản tin dùng để trao đổi thông tin giữa các switch chạy STP nhằm phục vụ cho quá trình bầu chọn Root Bridge, Root Port, Designated Port
+- 2 loại chính: `Configuration BPDU` (dùng trong bầu chọn, gửi định kỳ bởi Root Bridge) và `TCN BPDU - Topology Change Notification` (thông báo có sự thay đổi hạ tầng mạng)
+## 12.7. RSTP (Rapid Spanning Tree Protocol - 802.1w)
+- Là phiên bản cải tiến của STP truyền thống (802.1D), giúp rút ngắn thời gian hội tụ xuống chỉ còn vài giây thay vì 50s
+- Gộp 2 trạng thái Listening và Learning của STP truyền thống lại, chỉ còn 3 trạng thái cổng: `Discarding`, `Learning`, `Forwarding`
+- Định nghĩa thêm vai trò cổng mới:
+	- **Alternate Port**: cổng dự phòng cho Root Port (tương đương Blocking Port của STP)
+	- **Backup Port**: cổng dự phòng cho Designated Port trên cùng 1 phân đoạn mạng
+- Cấu hình chuyển sang RSTP trên Cisco:
+	```
+	spanning-tree mode rapid-pvst
+	```
+## 12.8. Các tính năng bảo vệ STP thường dùng
+### 12.8.1. PortFast
+- Áp dụng cho các port kết nối trực tiếp đến thiết bị đầu cuối (PC, Server) không kết nối đến switch khác, giúp port chuyển thẳng sang trạng thái Forwarding ngay mà không cần trải qua Listening/Learning, giúp PC lấy IP từ DHCP nhanh hơn
+	```
+	int f0/1
+		spanning-tree portfast
+	```
+### 12.8.2. BPDU Guard
+- Bảo vệ các port đã bật PortFast, nếu port này nhận được bất kỳ bản tin BPDU nào (nghĩa là có switch khác gắn nhầm vào port đầu cuối) thì port sẽ tự động chuyển sang trạng thái `err-disable` để ngăn chặn nguy cơ loop
+	```
+	int f0/1
+		spanning-tree bpduguard enable
+	```
+### 12.8.3. Root Guard
+- Ngăn chặn 1 switch không mong muốn trở thành Root Bridge trên 1 port xác định, nếu port đó nhận được BPDU tốt hơn (có khả năng thành Root) thì port sẽ bị đưa vào trạng thái `root-inconsistent` (tương đương blocking) cho đến khi hết nhận được BPDU đó
+	```
+	int f0/1
+		spanning-tree guard root
+	```
+### 12.8.4. Loop Guard
+- Bảo vệ các port Root/Alternate không bị chuyển nhầm sang Forwarding khi không còn nhận được BPDU do lỗi 1 chiều (unidirectional link failure)
+## 12.9. PVST+ và MST (Multiple Spanning Tree)
+Kiến thức thực tế về việc chạy STP trên hệ thống có nhiều VLAN, thường được hỏi khi so sánh các biến thể STP.
+- **PVST+ (Per-VLAN Spanning Tree Plus)**: là chế độ mặc định trên switch Cisco, chạy **1 instance STP độc lập cho mỗi VLAN**, giúp tối ưu đường đi riêng cho từng VLAN (VLAN khác nhau có thể có Root Bridge khác nhau để cân bằng tải) nhưng **tốn nhiều tài nguyên CPU** khi số lượng VLAN lớn (vì phải tính toán và gửi BPDU riêng cho từng VLAN)
+- **MST (Multiple Spanning Tree - IEEE 802.1s)**: cho phép gom **nhiều VLAN vào chung 1 nhóm (instance)** và chỉ cần chạy 1 tiến trình STP cho cả nhóm đó thay vì chạy riêng cho từng VLAN, giúp giảm tải đáng kể cho CPU của switch. Đây là lựa chọn phổ biến trong các hệ thống mạng doanh nghiệp lớn có hàng trăm VLAN
+	```
+	spanning-tree mode mst
+	spanning-tree mst configuration
+		name REGION1
+		revision 1
+		instance 1 vlan 1-50
+		instance 2 vlan 51-100
+	```
+
+# 13. EtherChannel (Port Aggregation - Gộp cổng)
+EtherChannel là kiến thức quan trọng trong CCNA, cụ thể:
+- Là kỹ thuật gộp nhiều cổng vật lý (thường 2-8 cổng) giữa 2 switch lại thành 1 cổng logic duy nhất nhằm:
+	- Tăng băng thông giữa 2 thiết bị (băng thông được cộng dồn)
+	- Cung cấp khả năng dự phòng: nếu 1 dây bị đứt thì lưu lượng tự động chuyển qua các dây còn lại mà không làm gián đoạn kết nối
+	- STP sẽ nhìn EtherChannel như 1 cổng logic duy nhất nên không xảy ra tình trạng bị block port khi đấu nhiều dây song song giữa 2 switch
+## 13.1. Các giao thức thương lượng EtherChannel
+- **PAgP (Port Aggregation Protocol)**: giao thức độc quyền của Cisco, có 2 chế độ `desirable` (chủ động gửi yêu cầu) và `auto` (bị động chờ yêu cầu)
+- **LACP (Link Aggregation Control Protocol)**: giao thức chuẩn mở IEEE 802.3ad, tương thích đa hãng, có 2 chế độ `active` (chủ động gửi yêu cầu) và `passive` (bị động chờ yêu cầu)
+- Ngoài ra có thể cấu hình chế độ `on` để ép buộc tạo EtherChannel không cần thương lượng giao thức (2 đầu phải giống nhau)
+## 13.2. Cấu hình EtherChannel (LACP)
+```
+int range f0/1-2
+	channel-group 1 mode active
+int port-channel 1
+	switchport mode trunk
+show etherchannel summary
+```
+- Lưu ý: các cổng thành viên tham gia EtherChannel phải có cấu hình đồng nhất (speed, duplex, VLAN, mode access/trunk,...) thì mới thương lượng thành công
+
+# 14. FHRP (First Hop Redundancy Protocol) - Giao thức dự phòng Gateway
+FHRP là kiến thức quan trọng trong CCNA, cụ thể:
+- Vấn đề: nếu PC chỉ khai báo 1 default-gateway duy nhất, khi Router đóng vai trò gateway đó gặp sự cố thì toàn bộ PC trong VLAN sẽ mất kết nối ra ngoài
+- Giải pháp: dùng nhiều Router cùng chia sẻ 1 địa chỉ IP ảo (Virtual IP) làm gateway chung, PC chỉ cần trỏ default-gateway đến địa chỉ ảo này
+## 14.1. HSRP (Hot Standby Router Protocol)
+- Giao thức độc quyền Cisco
+- Trong 1 nhóm HSRP có 1 Router đóng vai trò `Active` (xử lý toàn bộ lưu lượng) và 1 hoặc nhiều Router đóng vai trò `Standby` (dự phòng, sẵn sàng thay thế khi Active gặp sự cố)
+- Bầu chọn dựa trên tham số `priority` (mặc định 100), priority cao nhất sẽ làm Active, nếu bằng nhau thì IP vật lý cao nhất sẽ thắng
+- Gửi bản tin hello định kỳ 3s 1 lần đến địa chỉ multicast `224.0.0.2`, nếu sau 10s không nhận được hello thì Standby sẽ chuyển lên làm Active
+- Cấu hình cơ bản:
+	```
+	int f0/0
+		ip address 10.0.0.2 255.255.255.0
+		standby 1 ip 10.0.0.1
+		standby 1 priority 110
+		standby 1 preempt
+	```
+	- `standby 1 ip`: khai báo địa chỉ IP ảo dùng chung
+	- `preempt`: cho phép Router có priority cao hơn giành lại vai trò Active khi nó phục hồi sau sự cố (mặc định HSRP không preempt)
+Phân biệt HSRPv1 và HSRPv2:
+- **HSRPv1**: chỉ hỗ trợ tối đa **255 group** trên 1 cổng, chỉ hỗ trợ IPv4, gửi hello đến địa chỉ multicast `224.0.0.2`
+- **HSRPv2**: hỗ trợ tối đa **4096 group**, hỗ trợ cả IPv6, gửi hello đến địa chỉ multicast riêng `224.0.0.102`, đồng thời rút ngắn thời gian hội tụ hơn so với v1
+- Cấu hình chọn version: `standby version 2`
+## 14.2. VRRP (Virtual Router Redundancy Protocol)
+- Giao thức chuẩn mở (IEEE), tương thích đa hãng, cơ chế hoạt động tương tự HSRP nhưng vai trò được gọi là `Master` và `Backup` thay vì Active/Standby
+## 14.3. GLBP (Gateway Load Balancing Protocol)
+- Giao thức độc quyền Cisco, khác biệt so với HSRP/VRRP ở chỗ **tất cả các Router trong nhóm đều được sử dụng đồng thời** (load balancing) thay vì chỉ có 1 Router Active xử lý lưu lượng, giúp tận dụng tối đa tài nguyên các Router dự phòng
+
+# 15. DHCP (Dynamic Host Configuration Protocol)
+DHCP là kiến thức quan trọng trong CCNA, cụ thể:
+- Giao thức tự động cấp phát địa chỉ IP, subnet mask, default-gateway, DNS,... cho các thiết bị đầu cuối mà không cần cấu hình tay
+## 15.1. Cơ chế hoạt động DORA
+- Quá trình 4 bước giữa Client và DHCP Server:
+	- **Discover**: Client gửi bản tin broadcast tìm kiếm DHCP Server trong mạng
+	- **Offer**: DHCP Server phản hồi đề nghị cấp 1 địa chỉ IP còn trống
+	- **Request**: Client gửi yêu cầu xác nhận muốn sử dụng địa chỉ IP được đề nghị (cũng gửi broadcast để các DHCP server khác biết địa chỉ đó đã được chọn)
+	- **Acknowledge (ACK)**: DHCP Server xác nhận và chính thức cấp phát địa chỉ IP đó cho Client cùng các thông số đi kèm
+- Địa chỉ IP được cấp có thời hạn sử dụng gọi là `lease time`, hết thời gian này Client phải gia hạn lại
+## 15.2. Cấu hình DHCP Server trên Router Cisco
+```
+ip dhcp excluded-address 192.168.1.1 192.168.1.10
+ip dhcp pool LAN1
+	network 192.168.1.0 255.255.255.0
+	default-router 192.168.1.1
+	dns-server 8.8.8.8
+	lease 7
+show ip dhcp binding
+```
+## 15.3. DHCP Relay (IP Helper-Address)
+- Vì bản tin DHCP Discover là broadcast nên mặc định không thể đi qua được Router để đến DHCP Server đặt ở vùng mạng khác
+- Cấu hình `ip helper-address` trên cổng Router phía Client giúp chuyển đổi bản tin broadcast DHCP thành unicast rồi gửi thẳng đến DHCP Server ở xa
+	```
+	int f0/0
+		ip helper-address 10.0.0.100
+	```
+## 15.4. DHCP Snooping
+Kỹ thuật bảo mật đi kèm DHCP, hay được hỏi chung với Port Security:
+- Là tính năng bảo mật trên switch giúp chống lại **Rogue DHCP Server** (kẻ tấn công tự dựng 1 DHCP Server giả trong mạng để cấp phát IP sai, chiếm quyền làm gateway/DNS giả nhằm nghe lén dữ liệu người dùng)
+- Cơ chế: chia các port trên switch thành 2 loại
+	- **Trusted port**: cổng được phép cho các bản tin phản hồi DHCP (Offer, ACK) đi qua, thường là cổng kết nối lên DHCP Server hợp lệ hoặc uplink lên switch khác
+	- **Untrusted port**: cổng mặc định (thường là cổng kết nối tới PC người dùng), nếu switch phát hiện có bản tin phản hồi DHCP (Offer/ACK) xuất hiện từ 1 untrusted port thì sẽ **chặn ngay lập tức** vì đó là dấu hiệu của DHCP Server giả mạo
+- Cấu hình cơ bản:
+	```
+	ip dhcp snooping
+	ip dhcp snooping vlan 1
+	int f0/1
+		ip dhcp snooping trust
+	```
+
+# 16. NAT (Network Address Translation)
+NAT là kiến thức quan trọng trong CCNA, chi tiết như sau:
+- Kỹ thuật chuyển đổi địa chỉ IP Private thành địa chỉ IP Public (và ngược lại) để các thiết bị trong mạng nội bộ có thể truy cập được internet, đồng thời giúp tiết kiệm địa chỉ IPv4 Public
+## 16.1. Static NAT
+- Ánh xạ **cố định 1-1** giữa 1 địa chỉ IP Private và 1 địa chỉ IP Public, thường dùng cho Server cần truy cập từ internet vào
+	```
+	ip nat inside source static 192.168.1.10 203.0.113.10
+	int f0/0
+		ip nat inside
+	int f0/1
+		ip nat outside
+	```
+## 16.2. Dynamic NAT
+- Ánh xạ động giữa 1 dải địa chỉ Private với 1 dải địa chỉ Public thông qua `access-list`, không cố định địa chỉ nào ánh xạ với địa chỉ nào
+	```
+	access-list 1 permit 192.168.1.0 0.0.0.255
+	ip nat pool PUBLIC_POOL 203.0.113.1 203.0.113.10 netmask 255.255.255.0
+	ip nat inside source list 1 pool PUBLIC_POOL
+	```
+## 16.3. PAT (Port Address Translation) - NAT Overload
+- Cho phép **nhiều địa chỉ IP Private** cùng dùng chung **1 địa chỉ IP Public** duy nhất bằng cách phân biệt các phiên qua số port nguồn, đây là kiểu NAT phổ biến nhất được dùng trong thực tế (router gia đình, doanh nghiệp nhỏ)
+	```
+	access-list 1 permit 192.168.1.0 0.0.0.255
+	ip nat inside source list 1 interface f0/1 overload
+	```
+- Lệnh kiểm tra: `show ip nat translations`, `show ip nat statistics`, `clear ip nat translation *`
+
+# 17. ACL (Access Control List)
+ACL là kiến thức quan trọng trong CCNA, chi tiết như sau:
+- Là tập hợp các câu lệnh dùng để lọc lưu lượng đi qua Router/Switch dựa trên các tiêu chí như địa chỉ IP nguồn/đích, port, giao thức,... nhằm mục đích bảo mật hoặc điều hướng lưu lượng (ví dụ kết hợp với NAT, route-map)
+- Router sẽ so khớp gói tin với ACL **theo thứ tự từ trên xuống dưới**, khi khớp dòng nào thì dừng lại và áp dụng hành động (permit/deny) của dòng đó, nếu không khớp dòng nào thì mặc định sẽ bị `deny` tất cả (implicit deny)
+## 17.0. Wildcard Mask (tham số bắt buộc phải hiểu trước khi cấu hình ACL)
+- Wildcard Mask có 32 bit giống Subnet Mask nhưng **ý nghĩa ngược lại**:
+	- Bit `0`: bắt buộc phải **khớp chính xác** octet tương ứng của địa chỉ IP tham chiếu
+	- Bit `1`: **bỏ qua**, không cần khớp octet tương ứng (chấp nhận bất kỳ giá trị nào)
+- Cách tính nhanh: `Wildcard Mask = 255.255.255.255 - Subnet Mask`
+	- VD: mạng `192.168.1.0/24` có Subnet Mask `255.255.255.255`, Wildcard tương ứng = `255.255.255.255 - 255.255.255.0 = 0.0.0.255`
+	- VD: mạng `192.168.1.0/26` có Subnet Mask `255.255.255.192`, Wildcard tương ứng = `255.255.255.255 - 255.255.255.192 = 0.0.0.63`
+- Các trường hợp đặc biệt hay gặp:
+	- `host 192.168.1.5` tương đương `192.168.1.5 0.0.0.0` (chỉ khớp chính xác 1 địa chỉ IP duy nhất)
+	- `any` tương đương `0.0.0.0 255.255.255.255` (khớp với mọi địa chỉ IP)
+## 17.1. Standard ACL
+- Chỉ lọc được dựa trên **địa chỉ IP nguồn**, dải số hiệu từ `1-99` và `1300-1999`
+- Nên đặt ACL gần với **đích** cần bảo vệ vì nó lọc theo nguồn nên nếu đặt gần nguồn quá sẽ chặn nhầm các lưu lượng khác của nguồn đó
+	```
+	access-list 10 deny 192.168.1.0 0.0.0.255
+	access-list 10 permit any
+	int f0/0
+		ip access-group 10 in
+	```
+## 17.2. Extended ACL
+- Lọc được chi tiết hơn dựa trên: IP nguồn, IP đích, giao thức (tcp/udp/icmp), port nguồn, port đích, dải số hiệu từ `100-199` và `2000-2699`
+- Nên đặt ACL gần với **nguồn** cần lọc để tiết kiệm tài nguyên xử lý trên toàn hệ thống mạng
+	```
+	access-list 101 deny tcp 192.168.1.0 0.0.0.255 any eq 80
+	access-list 101 permit ip any any
+	int f0/0
+		ip access-group 101 in
+	```
+## 17.3. Named ACL
+- Thay vì đặt số hiệu thì đặt tên gợi nhớ cho ACL, dễ quản lý và có thể chỉnh sửa/xóa từng dòng riêng lẻ mà không cần xóa toàn bộ ACL
+	```
+	ip access-list extended BLOCK_WEB
+		deny tcp any any eq 80
+		permit ip any any
+	```
+- Lệnh kiểm tra: `show access-lists`, `show ip interface` (để xem ACL nào đang áp trên cổng)
+
+# 18. Port Security
+Port Security là kiến thức quan trọng trong CCNA, cụ thể:
+- Tính năng bảo mật trên switch giúp giới hạn và kiểm soát địa chỉ MAC nào được phép truy cập vào 1 port, tránh việc kẻ tấn công gắn thêm switch/thiết bị lạ vào hệ thống
+## 18.1. Cấu hình cơ bản
+```
+int f0/1
+	switchport mode access
+	switchport port-security
+	switchport port-security maximum 2
+	switchport port-security mac-address sticky
+	switchport port-security violation shutdown
+```
+- `maximum`: số lượng địa chỉ MAC tối đa được học trên port (mặc định là 1)
+- `mac-address sticky`: tự động học địa chỉ MAC đầu tiên kết nối vào port và lưu vào running-config
+- `violation`: hành động khi có vi phạm (MAC lạ kết nối vào hoặc vượt quá số lượng cho phép):
+	- `shutdown` (mặc định): port bị đưa vào trạng thái `err-disable`, cần thao tác `shutdown` -> `no shutdown` để khôi phục
+	- `restrict`: chặn lưu lượng vi phạm nhưng vẫn giữ port hoạt động, có ghi log
+	- `protect`: chặn lưu lượng vi phạm, không ghi log
+- Lệnh kiểm tra: `show port-security`, `show port-security address`
+
+# 19. Wireless LAN (Mạng không dây)
+Wireless LAN là kiến thức quan trọng trong CCNA, cụ thể:
+## 19.1. Các thành phần cơ bản
+- **AP (Access Point)**: thiết bị phát sóng wifi, cho phép các thiết bị không dây kết nối vào mạng LAN có dây
+- **WLC (Wireless LAN Controller)**: thiết bị quản lý tập trung nhiều AP trong hệ thống mạng lớn (mô hình Lightweight AP)
+- **SSID (Service Set Identifier)**: tên của mạng không dây hiển thị cho người dùng lựa chọn kết nối
+### 19.1.1. Autonomous AP vs Lightweight AP
+2 mô hình triển khai AP dưới đây là kiến thức nền tảng để hiểu vì sao cần WLC.
+- **Autonomous AP**: mỗi AP hoạt động **độc lập**, tự chứa toàn bộ chức năng (quản lý, mã hóa, phát sóng), phải cấu hình tay riêng lẻ từng AP — chỉ phù hợp với mô hình nhỏ (vài AP), khó quản lý khi số lượng AP lớn
+- **Lightweight AP (LAP)**: AP chỉ đảm nhiệm phần phát sóng (Data Plane), còn toàn bộ phần điều khiển, cấu hình tập trung (Control Plane) được đẩy về **WLC**, giúp quản lý hàng trăm - hàng nghìn AP tập trung tại 1 nơi, đây là mô hình phổ biến trong doanh nghiệp hiện nay
+- **CAPWAP (Control And Provisioning of Wireless Access Points)**: là giao thức đường hầm (tunnel) dùng để trao đổi thông tin điều khiển và dữ liệu giữa Lightweight AP và WLC, chạy trên UDP port `5246` (control) và `5247` (data)
+### 19.1.2. Roaming
+- Là khả năng thiết bị đầu cuối (laptop, điện thoại) tự động chuyển vùng phủ sóng từ AP này sang AP khác mà **không bị gián đoạn kết nối** khi di chuyển trong cùng 1 hệ thống mạng WLAN, nhờ WLC đồng bộ thông tin phiên làm việc giữa các AP với nhau
+## 19.2. Chuẩn IEEE 802.11
+- Các chuẩn phổ biến: `802.11a/b/g/n/ac/ax`, mỗi chuẩn khác nhau về băng tần sử dụng (2.4GHz hoặc 5GHz) và tốc độ tối đa hỗ trợ
+- Băng tần 2.4GHz: vùng phủ sóng rộng hơn nhưng dễ nhiễu, tốc độ thấp hơn 5GHz
+- Băng tần 5GHz: tốc độ cao hơn nhưng vùng phủ sóng hẹp hơn
+Về kênh (channel) phát sóng: băng tần 2.4GHz có tổng cộng 11-13 kênh (tùy khu vực) nhưng các kênh liền kề bị chồng lấn tần số gây nhiễu lẫn nhau, nên trong thực tế triển khai chỉ nên dùng **3 kênh không chồng lấn là 1, 6, 11** khi bố trí nhiều AP gần nhau để hạn chế nhiễu (interference). Băng tần 5GHz có nhiều kênh không chồng lấn hơn hẳn nên ít bị vấn đề này hơn.
+## 19.3. Bảo mật Wireless
+- **WEP**: chuẩn mã hóa cũ, đã lỗi thời và không còn an toàn
+- **WPA/WPA2**: cải tiến bảo mật hơn WEP, WPA2 sử dụng thuật toán mã hóa AES
+- **WPA3**: chuẩn bảo mật mới nhất hiện nay, khắc phục các lỗ hổng của WPA2
+- **Chế độ xác thực**: `Personal (PSK - Pre-Shared Key)` dùng chung 1 mật khẩu cho tất cả người dùng, phù hợp hộ gia đình/quy mô nhỏ; `Enterprise (802.1X)` xác thực từng người dùng riêng biệt thông qua RADIUS Server, phù hợp doanh nghiệp
+
+# 20. Network Automation & Programmability (Tự động hóa mạng)
+Đây là phần kiến thức mới được đưa vào chương trình thi CCNA hiện tại.
+## 20.1. Kiến trúc mạng truyền thống vs SDN
+- Mạng truyền thống: mỗi thiết bị (router/switch) tự xử lý độc lập cả `Control Plane` (quyết định đường đi) và `Data Plane` (chuyển tiếp dữ liệu thực tế)
+- **SDN (Software Defined Network)**: tách rời `Control Plane` ra khỏi thiết bị vật lý và tập trung về 1 bộ điều khiển (Controller) duy nhất, các thiết bị chỉ còn giữ lại `Data Plane` để chuyển tiếp dữ liệu theo chỉ định của Controller, giúp quản lý tập trung, dễ tự động hóa quy mô lớn
+- Kiến trúc Cisco DNA Center là ví dụ điển hình cho việc quản lý tập trung hạ tầng mạng có dây và không dây
+## 20.2. REST API
+- Là phương thức phổ biến để các ứng dụng/Controller giao tiếp với thiết bị mạng, sử dụng các phương thức HTTP: `GET` (lấy dữ liệu), `POST` (tạo mới), `PUT`/`PATCH` (cập nhật), `DELETE` (xóa)
+## 20.3. Định dạng dữ liệu JSON
+- Định dạng dữ liệu phổ biến nhất khi trao đổi qua REST API, có cấu trúc dạng cặp `key: value`, dễ đọc và dễ được các ngôn ngữ lập trình xử lý
+- VD: `{"hostname": "R1", "interface": "f0/0", "status": "up"}`
+## 20.4. Công cụ tự động hóa cấu hình
+- **Ansible, Puppet, Chef**: các công cụ tự động hóa cấu hình hàng loạt thiết bị mạng thay vì phải cấu hình tay từng thiết bị, giúp tiết kiệm thời gian và giảm sai sót do con người
+## 20.5. NETCONF, RESTCONF và YANG
+Bộ giao thức quản lý cấu hình chuẩn hóa dưới đây nằm cùng nhóm kiến thức Automation trong đề cương thi CCNA 200-301.
+- **YANG (Yet Another Next Generation)**: là ngôn ngữ dùng để **mô hình hóa dữ liệu (data model)** cấu hình và trạng thái của thiết bị mạng theo 1 cấu trúc chuẩn hóa, đóng vai trò như "khuôn mẫu" mô tả thiết bị có những thông số gì, kiểu dữ liệu gì — bản thân YANG không phải là giao thức truyền tải mà chỉ là định dạng mô tả
+- **NETCONF**: là giao thức quản lý cấu hình mạng chuẩn hóa (RFC 6241), truyền dữ liệu ở định dạng `XML`, chạy trên nền `SSH`, cho phép lấy (get) và chỉnh sửa (edit-config) cấu hình thiết bị theo mô hình dữ liệu YANG
+- **RESTCONF**: tương tự NETCONF nhưng cung cấp giao diện kiểu **REST API** để thao tác với dữ liệu theo mô hình YANG, hỗ trợ định dạng `JSON` hoặc `XML`, sử dụng các phương thức HTTP quen thuộc (GET/POST/PUT/DELETE), dễ tích hợp với các ứng dụng automation hiện đại hơn so với NETCONF
+
+# 21. Bảo mật hạ tầng mạng cơ bản (Security Fundamentals)
+Kiến thức bảo mật tổng quan quan trọng trong CCNA, cụ thể:
+## 21.1. Các mối đe dọa phổ biến
+- **DoS/DDoS (Denial of Service)**: tấn công làm cạn kiệt tài nguyên khiến hệ thống/dịch vụ không thể phục vụ người dùng hợp lệ
+- **Spoofing**: giả mạo địa chỉ IP hoặc MAC để đánh lừa hệ thống
+- **Man-in-the-Middle**: kẻ tấn công chen vào giữa quá trình trao đổi dữ liệu của 2 bên để nghe lén hoặc chỉnh sửa dữ liệu
+- **Social Engineering**: lợi dụng yếu tố con người (lừa đảo, giả mạo) để lấy được thông tin nhạy cảm thay vì tấn công trực tiếp vào hệ thống
+## 21.2. Nguyên tắc AAA
+- **Authentication**: xác thực danh tính người dùng (đúng username/password hay không)
+- **Authorization**: phân quyền, xác định người dùng được phép làm gì sau khi đã xác thực thành công
+- **Accounting**: ghi lại nhật ký (log) các hành động người dùng đã thực hiện để phục vụ kiểm tra, truy vết sau này
+- Thường triển khai tập trung qua Server `RADIUS` hoặc `TACACS+` thay vì cấu hình local trên từng thiết bị
+## 21.3. VPN (Virtual Private Network) cơ bản
+- Tạo ra 1 đường truyền riêng ảo, được mã hóa, đi qua hạ tầng mạng công cộng (internet) giúp kết nối an toàn giữa 2 điểm ở xa nhau (site-to-site) hoặc từ 1 người dùng đến hệ thống mạng công ty (remote-access)
+- Các giao thức phổ biến: `IPSec`, `SSL VPN`
+## 21.4. Device Hardening (Gia cố bảo mật thiết bị)
+- Đổi password mặc định, sử dụng mã hóa password (`service password-encryption`), giới hạn truy cập quản trị chỉ qua SSH thay vì Telnet
+- Tắt các dịch vụ không cần thiết trên thiết bị để giảm bề mặt tấn công (attack surface)
+- Áp dụng ACL để giới hạn địa chỉ IP được phép truy cập quản trị thiết bị
+
+# 22. QoS (Quality of Service) cơ bản
+QoS là 1 phần trong đề cương chính thức thi CCNA 200-301.
+## 22.1. Lý do cần QoS
+- Trên 1 đường truyền, băng thông là tài nguyên có giới hạn, khi nhiều loại lưu lượng (voice, video, dữ liệu thông thường, download file lớn) cùng đi qua 1 đường truyền thì cần có cơ chế **ưu tiên** loại lưu lượng nào quan trọng/nhạy cảm hơn (như thoại, video call) để tránh bị giật, trễ, mất gói
+## 22.2. Các tham số ảnh hưởng chất lượng truyền
+- **Bandwidth (Băng thông)**: tốc độ tối đa đường truyền có thể đáp ứng
+- **Delay/Latency (Độ trễ)**: thời gian gói tin đi từ nguồn đến đích
+- **Jitter**: độ trễ không đồng đều dao động giữa các gói tin liên tiếp, ảnh hưởng nghiêm trọng đến chất lượng thoại/video call
+- **Packet Loss (Mất gói)**: tỷ lệ gói tin bị mất trong quá trình truyền
+## 22.3. Các cơ chế QoS cơ bản
+- **Classification & Marking (Phân loại & Đánh dấu)**: xác định loại lưu lượng nào (voice, video, data) và gắn nhãn ưu tiên vào gói tin (VD: trường `DSCP` trong IP header, hoặc `CoS` trong Ethernet header) để các thiết bị sau đó dựa vào nhãn này xử lý ưu tiên
+- **Congestion Management (Quản lý hàng đợi)**: khi cổng bị nghẽn, dữ liệu được xếp vào các hàng đợi (queue) khác nhau theo mức ưu tiên, lưu lượng ưu tiên cao được xử lý và đẩy đi trước
+- **Congestion Avoidance (Tránh nghẽn)**: chủ động loại bỏ bớt gói tin ưu tiên thấp trước khi hàng đợi bị đầy hoàn toàn (tránh tình trạng tràn hàng đợi làm rớt gói hàng loạt), kỹ thuật phổ biến là `WRED (Weighted Random Early Detection)`
+- **Policing & Shaping (Giới hạn băng thông)**:
+	- `Policing`: giám sát và drop (loại bỏ) ngay các gói tin vượt quá tốc độ cho phép
+	- `Shaping`: giữ lại (buffer) các gói tin vượt quá tốc độ cho phép và gửi đi từ từ sau đó thay vì loại bỏ, giúp lưu lượng mượt hơn nhưng có thể gây trễ
+
+# 23. Network Management (Quản lý & Giám sát mạng)
+Nhóm chủ đề quản lý/giám sát mạng nằm trong đề cương chính thức thi CCNA 200-301.
+## 23.1. NTP (Network Time Protocol)
+- Giao thức đồng bộ thời gian giữa các thiết bị trong hệ thống mạng, đảm bảo tất cả thiết bị có cùng 1 mốc thời gian chính xác, rất quan trọng khi cần đối chiếu log giữa nhiều thiết bị lúc xảy ra sự cố
+	```
+	ntp server 10.0.0.1
+	show ntp status
+	```
+## 23.2. Syslog
+- Giao thức dùng để gửi các bản tin log (thông báo, cảnh báo, lỗi) từ thiết bị mạng về 1 Server tập trung (Syslog Server) để lưu trữ và theo dõi tập trung thay vì phải xem log riêng lẻ từng thiết bị
+- Các mức độ (severity level) từ 0 (Emergency - nghiêm trọng nhất) đến 7 (Debugging - chi tiết nhất)
+	```
+	logging host 10.0.0.100
+	logging trap informational
+	```
+## 23.3. SNMP (Simple Network Management Protocol)
+- Giao thức giám sát tình trạng hoạt động của thiết bị mạng (CPU, RAM, trạng thái cổng,...) tập trung tại 1 Server quản lý (NMS - Network Management System)
+- Cơ chế hoạt động dựa trên 2 chiều:
+	- `Polling`: NMS chủ động định kỳ hỏi thăm (GET) thông tin từ thiết bị
+	- `Trap`: thiết bị chủ động gửi cảnh báo ngay lập tức về NMS khi có sự kiện bất thường xảy ra, không cần đợi NMS hỏi
+- Các phiên bản: SNMPv1/v2c (xác thực bằng community string dạng chuỗi rõ, kém an toàn), SNMPv3 (bổ sung xác thực và mã hóa, an toàn hơn)
+## 23.4. NetFlow
+- Công nghệ giám sát và thống kê lưu lượng đi qua thiết bị theo từng luồng (flow), giúp biết được ai đang dùng bao nhiêu băng thông, đi đến đâu, dùng giao thức/ứng dụng gì, hữu ích cho việc phân tích lưu lượng và phát hiện bất thường trên hệ thống mạng
+
+# 24. Ảo hóa và Kiến trúc mạng hiện đại (Virtualization & Modern Network Architecture)
+Nhóm chủ đề nền tảng về ảo hóa và kiến trúc mạng hiện đại nằm trong đề cương chính thức thi CCNA 200-301 (mục Network Fundamentals).
+## 24.1. Ảo hóa (Virtualization) cơ bản
+- **Máy ảo (Virtual Machine - VM)**: là 1 hệ điều hành được giả lập chạy trên nền tảng phần cứng vật lý dùng chung, giúp nhiều hệ điều hành khác nhau có thể chạy đồng thời trên cùng 1 máy chủ vật lý
+- **Hypervisor**: phần mềm quản lý và phân bổ tài nguyên phần cứng (CPU, RAM, ổ đĩa) cho các máy ảo, gồm 2 loại:
+	- `Type 1 (Bare-metal)`: cài trực tiếp lên phần cứng server, không cần hệ điều hành nền bên dưới (VD: VMware ESXi, Microsoft Hyper-V) — hiệu năng cao, thường dùng trong datacenter
+	- `Type 2 (Hosted)`: cài đặt như 1 phần mềm ứng dụng chạy trên 1 hệ điều hành có sẵn (VD: VMware Workstation, VirtualBox) — dùng phổ biến cho máy cá nhân, lab học tập
+- **Container**: là công nghệ ảo hóa ở mức nhẹ hơn VM, không đóng gói nguyên cả hệ điều hành mà chỉ đóng gói ứng dụng cùng các thư viện cần thiết, dùng chung nhân (kernel) hệ điều hành của máy chủ, giúp khởi động nhanh hơn và tốn ít tài nguyên hơn VM (công nghệ phổ biến: Docker)
+- **VRF (Virtual Routing and Forwarding)**: kỹ thuật ảo hóa bảng định tuyến trên 1 Router vật lý, cho phép tồn tại nhiều bảng định tuyến độc lập trên cùng 1 thiết bị, tương tự như VLAN nhưng ở tầng Layer 3
+## 24.2. Kiến trúc mạng Datacenter: Spine-Leaf
+- Là mô hình thiết kế hạ tầng mạng phổ biến trong các Datacenter hiện đại, thay thế cho mô hình 3 lớp (Core-Distribution-Access) truyền thống
+- Gồm 2 lớp thiết bị:
+	- **Spine**: lớp lõi trung tâm, không kết nối trực tiếp xuống thiết bị đầu cuối mà chỉ kết nối với các switch Leaf
+	- **Leaf**: lớp kết nối trực tiếp đến máy chủ (server) và các thiết bị đầu cuối, mỗi Leaf switch đều kết nối đến **tất cả** các Spine switch
+- Ưu điểm: mọi Leaf đều cách nhau đúng 2 hop (Leaf - Spine - Leaf) nên độ trễ luôn cố định và dự đoán được, dễ dàng mở rộng quy mô bằng cách thêm Spine hoặc Leaf mà không ảnh hưởng đến toàn bộ hệ thống
+## 24.3. Điện toán đám mây (Cloud Computing) cơ bản
+- **On-premise**: hạ tầng (server, thiết bị mạng) được đặt và quản lý vật lý ngay tại tổ chức/doanh nghiệp
+- **Cloud**: hạ tầng được thuê và vận hành từ nhà cung cấp dịch vụ đám mây (AWS, Azure, Google Cloud,...), truy cập và sử dụng qua internet
+- Các mô hình dịch vụ Cloud phổ biến:
+	- **IaaS (Infrastructure as a Service)**: nhà cung cấp cho thuê hạ tầng (máy chủ ảo, lưu trữ, mạng), người dùng tự cài đặt và quản lý hệ điều hành/ứng dụng bên trên (VD: AWS EC2)
+	- **PaaS (Platform as a Service)**: nhà cung cấp quản lý luôn cả hệ điều hành và nền tảng chạy ứng dụng, người dùng chỉ cần tập trung phát triển và triển khai ứng dụng của mình
+	- **SaaS (Software as a Service)**: nhà cung cấp cung cấp sẵn phần mềm hoàn chỉnh qua internet, người dùng chỉ việc sử dụng mà không cần quan tâm đến hạ tầng bên dưới (VD: Gmail, Microsoft 365)
