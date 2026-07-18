@@ -161,21 +161,27 @@ L3: packet (data,ip)
 ## 3.3. Quá trình trao đổi dữ liệu trên LAN
 - Các thiết bị đầu cuối muốn trao đổi dữ liệu trong mạng LAN cần 2 thông tin 1 địa chỉ MAC và 2 là địa chỉ IP 
 ![alt text](Images/image-8.png)
-- PC1 muốn giao tiếp với PC2 sẽ soạn ra 1 gói tin với IP nguồn và IP đích sau đó nó sẽ gửi bản tin tới switch tuy nhiên switch chỉ có khả năng xử lý thông tin L2 header thôi do vậy PC1 phải gắn thêm MAC nguồn và MAC đích như trên hình
+Nguyên lý hoạt động
+- PC1 muốn giao tiếp với PC2 sẽ soạn ra 1 gói tin với IP nguồn và IP đích sau đó nó sẽ gửi bản tin tới switch tuy nhiên switch chỉ có khả năng xử lý thông tin L2 header thôi do vậy PC1 phải gắn thêm MAC nguồn và MAC đích như trên hình và được gọi là một frame
+- PC1 gửi frame trên tới switch và nó sẽ căng cứ vào mac đích và gửi chính xác đến PC2 chứ k gửi ra tất cả các port 
+- Ở góc độ PC2 khi nhận được bản tin thì nó phải đọc vào địa chỉ MAC đích xem có phải gửi cho nó hay không nếu phải thì nó tiến hành đọc tiếp vào L3 Header vào địa chỉ IP đích, nếu khớp PC sẽ tiến hành sử lý bản tin và gửi phản hồi lại PC1
 ## 3.4. Cơ chế chuyển mạch trên switch
-- Switch nhận frame trên 1 port rồi đẩy đến các port khác để xử lý, gọi là quá trình chuyển mạch
+Switch nhận `frame` trên 1 port rồi đẩy đến các port khác để xử lý, gọi là `quá trình chuyển mạch`
 - Để thực hiện chức năng chuyển mạch thì switch cần dựa vào 1 bảng dữ liệu gọi là `MAC Table` 
-![alt text](Images/image-9.png)
-- Có 2 cột 1 là cổng kết nối đến switch và 2 là địa chỉ MAC
-- Khi Từ một máy có địa chỉ MAC là A muốn gửi dữ liệu đến MAC đích là MAC B thì nó sẽ tìm kiếm MAC B trong cái bảng `MAC Table` từ trên xuống dưới và nó phát hiện nếu muốn đi đến MAC B thì phải đẩy dữ liệu đến port 2 tương tự với MAC C
+
+	![alt text](Images/image-9.png)
+- Có `2 cột` 
+  - 1 là **danh sách cổng kết nối đến switch (ex: f0/1)**
+  - 2 là **địa chỉ MAC tương ứng**
+- Khi Từ một máy có địa chỉ MAC là **A** muốn gửi dữ liệu đến MAC đích là MAC **B** thì nó sẽ tìm kiếm MAC B trong cái bảng `MAC Table` từ trên xuống dưới và nó phát hiện nếu muốn đi đến MAC B thì phải đẩy dữ liệu đến port f0/2 (tương tự với MAC C)
 ### 3.4.1. Cách switch xây dựng bảng MAC 
-- Khi Switch mới mua về hoặc chưa cấu hình thì sẽ không có bất kỳ dữ liệu nào và switch sẽ xây dựng MAC Table một cách tự động
-- Khi nhận được bất kì một cấu trúc frame nào thì nó sẽ thực hiện 2 thao tác
-	- Học MAC nguồn 
-	- Forward địa chỉ MAC đích 
-	- Nếu nó nhận được MAC nguồn là A trên port 1 thì lúc này nó sẽ cập nhật MAC A tương ứng với port 1  
-	- B2: MAC đích lúc này là B tuy nhiên trong bảng MAC Table vẫn chưa có biết MAC B nên đi port nào nên nó sẽ forward ra tất cả các port trừ port nhận vào 
-- Mỗi dòng thông tin trong bảng MAC Table chỉ được lưu trữ trong khoảng thời gian giới hạn khoảng 5 phút trong khoảng thời gian đó nếu không có bất kỳ dữ liệu nào được gửi tới port này nữa thì nó sẽ bị xóa khỏi bảng MAC Table: mục tiêu là làm tinh gọn bảng `MAC Address Table` làm tăng hiệu năng tiêu thụ 
+Khi Switch mới mua về hoặc chưa cấu hình thì sẽ không có bất kỳ dữ liệu nào và switch sẽ xây dựng MAC Table một cách tự động
+- Khi nhận được bất kì một cấu trúc `frame` nào thì nó sẽ thực hiện 2 thao tác
+	- **Học MAC nguồn** 
+	- **Forward địa chỉ MAC đích** 
+	- B1: Nếu nó nhận được MAC nguồn là A trên port f0/1 thì lúc này nó sẽ cập nhật MAC A tương ứng với port f0/1  
+	- B2: MAC đích lúc này là B tuy nhiên trong bảng MAC Table vẫn chưa có biết MAC B nên đi port nào nên nó sẽ `forward ra tất cả các port trừ port nhận vào` 
+- Mỗi dòng thông tin trong bảng MAC Table chỉ được lưu trữ trong khoảng thời gian giới hạn **khoảng 5 phút** trong khoảng thời gian đó nếu không có bất kỳ dữ liệu nào được gửi tới port này nữa thì nó sẽ bị xóa khỏi bảng MAC Table: mục tiêu là làm tinh gọn bảng `MAC Address Table` làm tăng hiệu năng tiêu thụ 
 - Để kiểm tra được bảng MAC address-table trên switch cisco thì ta dùng lệnh: **`show mac address-table`**
 ## 3.5. Các kiểu truyền thông trên mạng LAN
 ### 3.5.1. Unicast: 
@@ -191,17 +197,24 @@ L3: packet (data,ip)
 - Mỗi cổng của Router được coi là 1 BD và sử dụng các lớp mạng khác nhau 
 ### 3.5.3. Multicast: 
 - 1 máy tính gửi cho một nhóm thiết bị máy tính còn lại
+
 ## 3.6. Cơ chế hoạt động của giao thức ARP (Address Resolution Protocol) phân giải địa chỉ IP thành địa chỉ MAC
 - Máy tính sử dụng giao thức ARP sử dụng để phân giải địa chỉ IP thành địa chỉ MAC tương ứng
-- Khi một Máy tính A muốn gửi dữ liệu cho Máy tính B thì nó sẽ soạn thảo ra một cấu trúc frame (data, IP nguồn, IP đích) nó phải gắn thêm MAC nguồn và MAC đích nữa nhưng mà máy tính không biết MAC B là bao nhiêu nó phải căn cứ vào địa chỉ IP đích và nó phân giải được địa chỉ MAC đích tương ứng là gì 
+![alt text](image.png)
+- Khi một Máy tính A muốn gửi dữ liệu cho Máy tính B thì nó sẽ soạn thảo ra một cấu trúc `frame (data, IP nguồn, IP đích)` nó phải gắn thêm MAC nguồn và MAC đích nữa nhưng mà máy tính không biết MAC B là bao nhiêu nó phải căn cứ vào địa chỉ IP đích và nó phân giải được địa chỉ MAC đích tương ứng là gì 
 - Để phân giải được từ địa chỉ IP sang MAC thì nó phải soạn thảo 1 bản tin là `ARP request` với MAC nguồn là A và MAC đích là FFFF.FFFF.FFFF nó sẽ gửi ra tất cả các máy tính còn lại và hỏi Ai có IP này thì hồi đáp địa chỉ MAC tương ứng
 - Và request này khi gửi đến switch thì căn cứ vào địa chỉ MAC đích và sẽ đẩy địa chỉ ra tất cả các port trừ port nhận vào và PC nào có IP đó thì sẽ hồi đáp về PC A thông qua bản tin `ARP reply` 
-- Và khi đó PC A sẽ biết được địa chỉ MAC B là của ai rồi sẽ bổ sung vào địa chỉ MAC đích của mình sau đó nó sẽ gửi dữ liệu đến switch và switch sẽ căn cứ vào địa chỉ MAC B này và đẩy ra đúng port với PCB
+- Và khi đó PC A sẽ biết được địa chỉ MAC B là của ai rồi sẽ bổ sung vào địa chỉ MAC đích của mình sau đó nó sẽ gửi dữ liệu đến switch và switch sẽ căn cứ vào địa chỉ MAC B này và đẩy ra đúng port với PC B
+![alt text](image-1.png)
 - Sau khi PC A nhận được bản tin `ARP reply` từ PC B hồi đáp về thì nó sẽ lưu trữ về cái bản `arp cache table`: `arp -a` và khi mà gửi dữ liệu cho PC B thì nó không cần phân giải thêm 1 lần nào nữa
+
 ## 3.7. Quá trình trao đổi dữ liệu giữa các phân vùng mạng LAN
+Quá trình trao đổi dữ liệu giữa các phân vùng mạng LAN liên quan đến 2 đơn vị dữ liệu tại lớp 2 (frame) và lớp 3 (packet) 
+	- cấu trúc packet có ý nghĩa trên toàn vùng, cấu trúc frame có ý nghĩa trên từng phân vùng
 ![alt text](Images/image-10.png)
 - Cấu trúc L3 header không bị thay đổi còn L2 header thì bị thay đổi trong quá trình truyền 
 - Ngoài Ethernet L2 còn có các công nghệ khác như PPP truyền dữ liệu với khoảng cách xa hơn
+
 ## 3.8. Cấu trúc của địa chỉ MAC
 - `L2 Header` (Dest MAC, Source MAC, Type - cho biết nội dung Data chứa bản tin IPv4 hay IPv6 hay bản tin ARP)
 - Data
@@ -209,8 +222,8 @@ L3: packet (data,ip)
 - Địa chỉ MAC 48 bit chia làm 2 phần
   - 24 bit đầu tiên gọi là OUI (Organization Unique Identifier): ta có thể biết được do hãng nào sản xuất ra thường phải liên hệ với tổ chức cung cấp dải địa chỉ MAC để xin và mua được 24 con OUI này 
   - 24 bit cuối cùng (Vendor Assigned): để định danh cho từng card mạng họ sản xuất ra 
-- Địa chỉ MAC được viết dưới dạng số hexa nếu địa chỉ MAC dài 48 bit nhị phân thì cứ 4 bit nhị phân gom thành 1 số hexa vậy nên người ta gom thành 12 số hexa 
-- Cấu trúc số hexa như sau: cứ 2 hexa được ngăn cách bởi dấu : hoặc - hoặc cứ 4 số hexa ngăn cách nhau bằng dấu chấm 
+- Địa chỉ MAC được viết dưới dạng số `hexa` nếu địa chỉ MAC dài 48 bit nhị phân thì cứ 4 bit nhị phân gom thành 1 số hexa vậy nên người ta gom thành `12 số hexa`
+- Cấu trúc số hexa như sau: cứ 2 hexa được ngăn cách bởi dấu `:` hoặc `-` hoặc `cứ 4 số hexa ngăn cách nhau bằng dấu chấm` 
   - VD: 6400.6A: Card mạng này do hãng nào sản xuất ra 
 ## 3.9. Các tiêu chuẩn công nghệ ethernet LAN
 ### 3.9.1. Ethernet
@@ -221,26 +234,29 @@ L3: packet (data,ip)
 - IEEE 802.3z, chuẩn `1000BASE-X`, tốc độ 1000 Mbps (1 Gbps), chạy trên cáp quang
 - IEEE 802.3ab, chuẩn `1000BASE-T`, tốc độ 1000 Mbps (1 Gbps), chạy trên cáp đồng UTP Cat5e trở lên
 - IEEE 802.3x: đây là chuẩn quy định cơ chế **Full Duplex và Flow Control (PAUSE frame)**, đi kèm hỗ trợ cho Gigabit Ethernet chứ không phải là 1 chuẩn tốc độ riêng
-- Tóm gọn theo tốc độ: 10 Mbps -> 802.3 (10BASE-T) | 100 Mbps -> 802.3u (100BASE-TX/FX) | 1000 Mbps -> 802.3z (cáp quang) & 802.3ab (cáp đồng)
-## 3.10. Hub và Switch 
-- Cơ chế hoạt động của HUB: Hub là thiết bị hoạt động ở tầng Physical (tầng 1), khi nhận được tín hiệu điện trên 1 port thì nó chỉ đơn giản khuếch đại tín hiệu đó lên rồi phát (broadcast) ra tất cả các port còn lại mà không hề đọc hay xử lý bất kỳ thông tin địa chỉ nào, hoạt động như 1 thiết bị khuếch đại tín hiệu thuần túy
-- So sanh với Switch và HUB
-  - Switch là thiết bị lớp 2 vì nó có thể đọc vào L2 Header đọc vào cấu trúc Ethenet header dựa nào MAC nguồn và MAC đích đẩy cấu trúc frame vào chính xác port 
-  - HUB là thiết bị lớp 1 vì nó 0 có khả năng đọc vào L2 Header đọc vào cấu trúc Ethenet header khi mà chúng nhận được frame và chúng hiểu rằng frame này có tín hiệu 0101 trên môi trường truyền và lúc này sẽ khuếch đại tín hiệu này lên và gửi ra tất cả các port trừ port nhận vào, mặc định là nó sẽ đẩy Broadcard nếu nó nhận được thông tin từ bất cứ đâu gây giảm hiệu năng hệ thống và vấn đề bảo mật
-### 3.10.1. Half Duplex (HUB)
-- Chỉ có thể truyền thông tại 1 thời điểm chỉ có 1 thiết bị có thể truyền dữ liệu còn các thiết bị khác phải chờ 
-- Gây ra giảm tốc độ chia sẻ băng thông tốc độ tối đa sẽ chia ra trên từng phân đoạn mạng
-#### 3.10.1.1. Conllision Domain và cơ chế tránh đụng độ CSMA CD 
-- Khi sử dụng HUB thì xảy ra `Collision Domain`, HUB chỉ có khả năng hoạt động Half Duplex nên nếu các thiết bị truyền dữ liệu đồng thời thì có nguy cơ xảy ra đụng độ 
 
-	![alt text](Images/image-12.png)
-- Để hạn chế đụng độ thì nên sử dụng switch, vì mỗi port của switch được coi là 1 Collision Domain riêng, giúp chia 1 Collision Domain lớn thành nhiều Collision Domain nhỏ 
+**Tóm gọn theo tốc độ: 10 Mbps -> 802.3 (10BASE-T) | 100 Mbps -> 802.3u (100BASE-TX/FX) | 1000 Mbps -> 802.3z (cáp quang) & 802.3ab (cáp đồng)**
+## 3.10. Hub và Switch 
+Cơ chế hoạt động của HUB: **Hub là thiết bị hoạt động ở tầng Physical (tầng 1)**, khi nhận được tín hiệu điện trên 1 port thì nó chỉ đơn giản **khuếch đại tín hiệu đó lên rồi phát (broadcast) ra tất cả các port còn lại mà không hề đọc hay xử lý bất kỳ thông tin địa chỉ nào,** hoạt động như 1 thiết bị khuếch đại tín hiệu thuần túy
+
+**So sánh Switch và HUB**
+- Switch là thiết bị lớp 2 vì nó có thể đọc vào `L2 Header` đọc vào cấu trúc Ethenet header dựa vào MAC nguồn và MAC đích `đẩy cấu trúc frame vào chính xác port` 
+- HUB là thiết bị lớp 1 vì nó `không có khả năng đọc vào L2 Header đọc vào cấu trúc Ethenet header` khi mà chúng nhận được frame và chúng hiểu rằng frame này có tín hiệu 0101 trên môi trường truyền và lúc này sẽ khuếch đại tín hiệu này lên và gửi ra tất cả các port trừ port nhận vào, mặc định là nó sẽ đẩy Broadcard nếu nó nhận được thông tin từ bất cứ đâu gây giảm hiệu năng hệ thống và vấn đề bảo mật
+### 3.10.1. Half Duplex (HUB)
+Chỉ có thể truyền thông: tại 1 thời điểm chỉ có 1 thiết bị có thể truyền dữ liệu còn các thiết bị khác phải chờ 
+- **Gây ra giảm tốc độ chia sẻ băng thông tốc độ tối đa sẽ chia ra trên từng phân đoạn mạng**
+#### 3.10.1.1. Conllision Domain và cơ chế tránh đụng độ CSMA CD 
+Khi sử dụng HUB thì xảy ra `Collision Domain`, HUB chỉ có khả năng hoạt động `Half Duplex` nên **nếu các thiết bị truyền dữ liệu đồng thời thì có nguy cơ xảy ra đụng độ** 
+
+![alt text](Images/image-12.png)
+- Để hạn chế đụng độ thì nên sử dụng switch, vì **mỗi port của switch được coi là 1 Collision Domain riêng**, giúp chia 1 Collision Domain lớn thành nhiều Collision Domain nhỏ 
 
 	![alt text](Images/image-13.png)
-- Một BD thì có thể chứa nhiều CD 
-- Càng có nhieuf CD càng tốt 
+
+- Một BD thì có thể chứa nhiều CD, càng có nhiều CD càng tốt 
 - Để tránh được nguy cơ đụng độ xảy ra thì các thiết bị phải có **cơ chế chống đụng độ CSMA/CD** (Carrier Sense Multiple Access with Collision Detection - Đa truy cập cảm biến sóng mang với khả năng phát hiện đụng độ)
-![alt text](Images/image-14.png)
+
+	![alt text](Images/image-14.png)
 - Cơ chế CSMA/CD tự động được bật khi thiết bị hoạt động ở chế độ Half Duplex
   - Cơ chế hoạt động: trước khi truyền dữ liệu, máy tính sẽ lắng nghe xem có thiết bị nào khác đang truyền trên môi trường truyền hay không, nếu không có thì mới bắt đầu truyền trên môi trường này 
   - Nếu 2 thiết bị cùng lắng nghe và thấy môi trường đang rảnh rồi cùng truyền dữ liệu 1 lúc thì đụng độ sẽ xảy ra 
