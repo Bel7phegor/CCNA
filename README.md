@@ -355,31 +355,32 @@ Chúng có thể truyền và nhận dữ liệu đồng thời cùng lúc trên
 - Vì mỗi thiết bị đều có đường truyền riêng (không dùng chung môi trường vật lý như HUB) nên **không xảy ra đụng độ**, do đó **không cần dùng đến CSMA/CD** khi hoạt động ở chế độ Full Duplex
 - Switch hiện đại mặc định hoạt động Full Duplex khi kết nối điểm-điểm (point-to-point) với 1 thiết bị khác qua cáp UTP, cơ chế `Auto-Negotiation` giúp 2 đầu cổng tự động thương lượng tốc độ (speed) và chế độ song công (duplex) phù hợp với nhau
 ## 3.11. Chuẩn cáp Ethernet LAN
-- Phân biệt cáp UTP và cáp chống nhiễu STP
+Phân biệt cáp UTP và cáp chống nhiễu STP
 ### 3.11.1. Cáp đồng
-	- Bên trong có 8 cứ 2 sợi thì lại xoắn lại với nhau để chống nhiễu
-	- Có 2 loại UTP (0 có bọc chống nhiễu )và STP (có bọc chống nhiểu)
-	- Có nhiều chuẩn phổ biến: 100BASE-TX và 1000BASE-TX
-    	- Chữ T gọi là twisted pair 2 sợi nhỏ xoắn lại, giúp chống nhiễu và làm chắc
+- Bên trong có 8 sợi cứ 2 sợi thì lại xoắn lại với nhau để chống nhiễu
+- Có 2 loại UTP (0 có bọc chống nhiễu )và STP (có bọc chống nhiểu)
+- Có nhiều chuẩn phổ biến: 100BASE-TX và 1000BASE-TX
+  	- Chữ T gọi là twisted pair 2 sợi nhỏ xoắn lại, giúp chống nhiễu và làm chắc
 
-<div align="center">
-  <img src="Images/image-32.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-32.png" width="450" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
-	- CAT càng cao thì loại Cáp đó càng tốt: CAT5E, CAT6, CAT6A sợi đồng càng dầy tốc độ tốt hơn
+- CAT càng cao thì loại Cáp đó càng tốt: CAT5E, CAT6, CAT6A sợi đồng càng dầy tốc độ tốt hơn
+
 ### 3.11.2. Cáp thẳng (Straight-Through)và cáp chéo (Cross-Over)
 
 <div align="center">
-  <img src="Images/image-33.png" width="350" alt="alt text">
+  <img src="Images/image-33.png" width="450" alt="alt text">
   <br>
   <em></em>
 </div>
 
 #### 3.11.2.1. Cáp thẳng 
 - Đầu cáp được bấm theo chuẩn T-568B - T-568B
-- Thứ tự màu sắc:B **`Trắng Cam, Cam Trắng xanh lá, Xanh dương, trắng xanh dương, xanh lá, trắng nâu, nâu`**
+- Thứ tự màu sắc chuẩn B: **`Trắng Cam, Cam, Trắng xanh lá, Xanh dương, trắng xanh dương, xanh lá, trắng nâu, nâu`**
 - Chân 1 tính từ trái sang phải theo màu sắc ở trên
 - Các thiết bị khác nhau sẽ nối với nhau qua cáp thẳng
 	- VD: sw - rt, sw - pc
@@ -392,7 +393,7 @@ Chúng có thể truyền và nhận dữ liệu đồng thời cùng lúc trên
 
 #### 3.11.2.2. Cáp chéo 
 - Đầu cáp được bấm theo chuẩn T-568A - T-568B
-- Thứ tự màu sắc:A **`Trắng xanh lá, xanh lá, trắng cam, xanh dương, trắng xanh dương, cam, trắng nâu, nâu`** 
+- Thứ tự màu sắc chuẩn A: **`Trắng xanh lá, xanh lá, trắng cam, xanh dương, trắng xanh dương, cam, trắng nâu, nâu`** 
 - Chân 1 tính từ trái sang phải theo màu sắc ở trên
 - Các thiết bị giống nhau sẽ nối với nhau qua cáp chéo 
 	- VD: sw - sw, rt - rt, rt - pc, pc - pc 
@@ -407,8 +408,9 @@ Chúng có thể truyền và nhận dữ liệu đồng thời cùng lúc trên
 - Quy tắc phân biệt cáp thẳng/cáp chéo ở trên đúng về mặt lý thuyết và vẫn còn giá trị khi thi lý thuyết hoặc gặp thiết bị đời cũ. Tuy nhiên trong thực tế hiện nay, hầu hết switch/router/NIC đời mới đều hỗ trợ tính năng **Auto-MDIX (Automatic Medium-Dependent Interface Crossover)**, giúp cổng mạng tự động nhận diện và đảo chiều cặp dây tín hiệu cho phù hợp bất kể cắm cáp thẳng hay cáp chéo. Vì vậy trên thực tế đa số trường hợp **không còn bắt buộc phải chọn đúng loại cáp** như quy tắc truyền thống nữa, nhưng vẫn nên hiểu và nắm quy tắc này vì đề thi CCNA vẫn thường hỏi.
 # 4. Địa chỉ IP 
 ## 4.1. IPv4
-- Cấu trúc `IPv4` chia thành 2 phần 
-
+Cấu trúc `IPv4` chia thành 2 phần 
+- net-id và host-id
+- `Net-id` **giúp phân biệt mạng này với mạng khác còn** `host-id` **giúp định danh từng thiết bị bên trong vùng mạng**
 	
 <div align="center">
   <img src="Images/image-15.png" width="350" alt="alt text">
@@ -416,8 +418,6 @@ Chúng có thể truyền và nhận dữ liệu đồng thời cùng lúc trên
   <em></em>
 </div>
 
-- net-id và host-id
-- `Net-id` **giúp phân biệt mạng này với mạng khác còn** `host-id` **giúp định danh từng thiết bị bên trong vùng mạng**
 - Địa chỉ IPv4 được thể hiện dưới dạng nhị phân thì có chiều dài là **`32bit`** nhị phân. Trên thế giới có khoảng **2<sup>32</sup> địa chỉ IPv4** **(4,29 tỉ địa chỉ)** và đã cạn kiệt từ lâu 
 - Chuyển đổi số nhị phân sang số thập phân: **32 con số chia thành 4 cụm bằng nhau và mỗi cụm như vậy được gọi là `octet`**
 	
@@ -461,29 +461,29 @@ Chúng có thể truyền và nhận dữ liệu đồng thời cùng lúc trên
 	- Chuyển thành subnet mask 
 		- VD: **/24** thì viết ra 24 số 1 và các số sau bằng 0 hết cho thành 1 dãy địa chỉ IP và đổi từng cụm thành số thập phân 
 		
-<div align="center">
-  <img src="Images/image-19.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-19.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 - Đổi từ nhị phân sang thập phân 
 	- Chia 32 con số thành 4 cụm bằng nhau và đổi 8 bit thành 1 số thập phân
 	
-<div align="center">
-  <img src="Images/image-20.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-20.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 	- Tăng theo cấp số nhân `1, 2, 4, 8, 32, 64, 128`
 	- Chuyển đổi octet từ nhị phân sang thập phân
 	
-<div align="center">
-  <img src="Images/image-21.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-21.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 	- Chuyển đổi thập phân sang nhị phân
 		- Đầu tiên viết 8 số giảm dần `1, 2, 4, 8, 32, 64, 128` sau đó đưa số đó vào phần lớn nhất rồi còn lại đưa vào các ô khác sao cho vừa đủ rồi đánh các số có khớp ở dưới thành 1 và các số không khớp ở dưới đánh 0
@@ -495,54 +495,54 @@ Chúng có thể truyền và nhận dữ liệu đồng thời cùng lúc trên
 ### 4.1.2. Chức năng của địa chỉ mạng và địa chỉ Broadcast 
 - Trong địa chỉ mạng dùng để đảm nhiệm cho 1 dãy IP nhất định nào đó
 	
-<div align="center">
-  <img src="Images/image-22.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-22.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 - Với các bit host bằng 0 hết thì là địa chỉ mạng
 	
-<div align="center">
-  <img src="Images/image-24.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-24.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 - Với dãy mạng trên thì ta có dãy địa chỉ từ [0-255] và địa chỉ đầu là net-add và địa chỉ cuối là Broadcast-add và không thể gán 2 địa chỉ ip này cho hệ thống 
 	
-<div align="center">
-  <img src="Images/image-25.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-25.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 ### 4.1.3. Chia mạng con Subnet
 - Chia mạng lớn thành nhiều lớp mạng nhỏ 
 	
-<div align="center">
-  <img src="Images/image-26.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-26.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
     - Có nhiều bit đầu giống nhau thì gom nó thành 1 mạng mới 
 - Số lượng mạng con subnet và địa chỉ IP trong mỗi subnet
 	
-<div align="center">
-  <img src="Images/image-27.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-27.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 	- Chia đôi số lượng host-id sẽ ra số lượng mạng con nhỏ hơn, cứ mỗi lần mượn 1 bit thì 1 mạng lớn sẽ chia ra thành 2 mạng nhỏ
 	- VD: `/24` -> có `256 địa chỉ` -> /2 = 128 -> có 2 lớp mạng `/25` với mỗi lớp mạng sẽ có `128` địa chỉ IP
 	
-<div align="center">
-  <img src="Images/image-28.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-28.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 	- Từ `/24` -> `/26` -> mượn 2 bit của **host-id** còn `6bit ở host-id` với 2^2 -> 4 mạng con chia ra 4 trường hợp 00 01 10 11 và các bit sau cùng là 0 hết thì ra địa chỉ mạng lớp `/26` 
 	- Hoặc sử dụng phương pháp bước nhảy host-id có 2^6 = 64 cứ lấy từ 0 + 64 rồi + tiếp cho 64 thì sẽ ra lớp mạng tiếp theo
@@ -550,19 +550,19 @@ Chúng có thể truyền và nhận dữ liệu đồng thời cùng lúc trên
 ### 4.1.4. Quy hoạch IPv4
 - Xác định số lượng địa chỉ mạng tối đa mà cần phải có 
 	
-<div align="center">
-  <img src="Images/image-29.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-29.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 - VD: quy hoạch địa chỉ `192.168.1.0/24` 
 	
-<div align="center">
-  <img src="Images/image-30.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-30.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 	- Ta sẽ đi từ vùng mạng cần nhiều IP nhất sau đó đến lần lượt các mạng con sau
 	- 120 host -> `/25` -> 192.168.1.128/25
@@ -572,11 +572,11 @@ Chúng có thể truyền và nhận dữ liệu đồng thời cùng lúc trên
 ### 4.1.5. Địa chỉ Public và Private
 - Địa chỉ Public phải mua và được cấp từ nhà mạng
 	
-<div align="center">
-  <img src="Images/image-31.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-31.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 Các dải địa chỉ cụ thể theo chuẩn **RFC 1918** (rất hay bị hỏi trong đề thi CCNA):
 - **Địa chỉ Private (RFC 1918)** — không định tuyến được trên internet, chỉ dùng nội bộ, dùng chung cho nhiều tổ chức khác nhau mà không xung đột nhờ có NAT:
@@ -661,11 +661,11 @@ show ipv6 route
 # 6. Giao thức CDP (Cisco Discovery Protocol) - Phát hiện thiết bị láng giềng
 - Xem các thiết bị láng giềng: `show cdp neighbors` 
 	
-<div align="center">
-  <img src="Images/image-37.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-37.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 - Phát hiện được là router hay firewall hay port nào kết nối 
 - Biết được dòng sản phẩm
@@ -736,11 +736,11 @@ show ipv6 route
 - Hỗ trợ dịch vụ mã hóa, mọi thông tin username, password và mọi câu lệnh thực thi cũng đều được mã hóa 
 - Sử dụng port mặc định là `22`
 	
-<div align="center">
-  <img src="Images/image-38.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-38.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 	- `transport input ssh`: chỉ cho phép truy cập bằng SSH, nếu muốn cho phép cả 2 (SSH không được thì dùng Telnet) thì dùng `transport input all`
 - Mọi thông tin về username, password trước khi được gửi tới router thì nó sẽ được mã hóa bằng 1 password hay còn gọi là key
@@ -773,11 +773,11 @@ show ipv6 route
 - Đối với các dãy mạng khác nhau nhưng đều nằm cùng trên 1 con router thì không cần khai báo định tuyến tĩnh chỉ cần các thiết bị trong vùng mạng trỏ đúng tới cái default-gateway thì nó sẽ thông được với nhau 
 - Kiểm tra định tuyến: `show ip route`
 	
-<div align="center">
-  <img src="Images/image-39.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-39.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 - Nếu 2 router khác nhau thì các dãy mạng ở mỗi router không thể kết nối được với nhau bởi vì bảng định tuyến ở mỗi router đều không có đường đi đến lẫn nhau cho nên phải thêm đường đi cho chúng 
 	- R1
@@ -798,30 +798,30 @@ show ipv6 route
 - Default route: Thông thường trên 1 Router muốn gửi dữ liệu ra ngoài internet thì bản thân con router này phải có 1 route đặc biệt là `default route` nó sẽ đại diện cho tất cả các route có thể có ở ngoài internet
 	- `ip route 0.0.0.0 0.0.0.0 f0/0` (hạn chế sử dụng outbound interface để tránh làm giảm hiệu năng trong quá trình sử dụng)
 	
-<div align="center">
-  <img src="Images/image-40.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-40.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 - Và muốn dữ liệu mạng bên trong đi ra được internet thì ta cần NAT để có thể đi ra được internet
 	
-<div align="center">
-  <img src="Images/image-41.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-41.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 ### 9.1.2. Cơ chế Proxy ARP trong định tuyến
 - Proxy ARP nếu không sử dụng cẩn thận thì nó sẽ làm giảm hiệu năng sử dụng mạng
 - Nếu IP next-hop là 1 địa chỉ IP thì nó sẽ dễ dàng đi tới được đích hơn là để cổng 
 - Ví dụ có 2 vùng mạng từ PCA sang PCB như ở hình:
 	
-<div align="center">
-  <img src="Images/image-42.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-42.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 	- Thì PC A sẽ soạn thảo bản tin `[data|10.0.0.2|30.0.0.9]` gồm IP nguồn và IP đích
 	- Sau đó nó chuyển đến router, router sẽ đọc vào IP đích và tìm trong bảng định tuyến, phát hiện muốn đi đến lớp mạng `30.0.0.9` thì cần gửi bản tin qua IP next-hop `20.0.0.3`
@@ -838,42 +838,42 @@ show ipv6 route
 ### 9.1.3. Cấu hình cân bằng tải (Load Balancing)
 - Tại router ta có 2 đường đi đến mạng đích thì lúc này ta có thể cấu hình 2 static route đến cùng mạng đích này 
 	
-<div align="center">
-  <img src="Images/image-44.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-44.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 - Lúc này thì dữ liệu sẽ được cân bằng tải theo cả 2 hướng là F0/1 và F0/2 với tỉ lệ 50% và khi một cổng bất kì gặp sự cố thì tất cả các lưu lượng sẽ đổ qua cổng còn lại đảm bảo không bị gián đoạn dữ liệu trên hệ thống.
 	
-<div align="center">
-  <img src="Images/image-45.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-45.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 #### 9.1.3.1. Định hướng lưu lượng bằng cách hiệu chỉnh tham số AD (Administrative Distance) của Static route
 - Theo nguyên tắc là AD càng nhỏ thì đường đó càng tin cậy 
 	
-<div align="center">
-  <img src="Images/image-46.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-46.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
-	
-<div align="center">
-  <img src="Images/image-47.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+		
+	<div align="center">
+		<img src="Images/image-47.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
-	
-<div align="center">
-  <img src="Images/image-48.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+		
+	<div align="center">
+		<img src="Images/image-48.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 - Đường LAN trên đi đường trên, LAN dưới đi đường dưới 
 - Nếu muốn 2 đường bằng nhau thì chỉnh AD bằng nhau 
@@ -881,11 +881,11 @@ show ipv6 route
 - Nếu áp dụng kỹ thuật này thì việc định tuyến sẽ nhanh hơn
 - Nếu ta muốn định tuyến cho 255 mạng thì phải cấu hình bằng tay rất lâu
 	
-<div align="center">
-  <img src="Images/image-49.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-49.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 - Nếu áp dụng kỹ thuật summary thì R 2 có thể gửi được dữ liệu đến tất cả mạng LAN 
 	- `ip route 10.0.0.0 255.255.0.0 172.168.0.1`
@@ -903,11 +903,11 @@ show ipv6 route
 - Câu lệnh kiểm tra bản rip: `show ip route rip`
 - Khi từ 1 Router có nhiều đường đi tới mạng đích thì ta nên triển khai mô hình định tuyến động
 	
-<div align="center">
-  <img src="Images/image-50.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-50.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 - Và các Router đã bật RIP thì nó sẽ quảng bá cái mạng của mình cho các thiết bị lân cận mỗi 30s 1 lần 
 - Và các Router nhận được thông tin quảng bá đến thì nó sẽ học được đường đi đến các mạng khác.
@@ -918,11 +918,11 @@ show ipv6 route
 	- Route có ad thấp hơn sẽ được sử dụng trong suốt quá trình trao đổi dữ liệu
 - *Metric: Đường nào có Metric thấp hơn thì đường đó sẽ tốt hơn
 	
-<div align="center">
-  <img src="Images/image-51.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-51.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 	- Nếu đường có metric nhỏ hơn gặp sự cố thì cái đường có metric cao hơn sẽ xuất hiện trong bản định tuyến và đi theo đường này 
 	- Cách tính metric: dựa vào hop count 
@@ -931,20 +931,20 @@ show ipv6 route
 	- Và sau khi R2 láng giềng học được các mạng của R1 thì nó lại tiếp tục quảng bá cho R3 
 	- Và khi R3 nhận được bản tin định tuyến từ R2 gửi qua thì nó cập nhật lại bảng định tuyến của nó
 	
-<div align="center">
-  <img src="Images/image-52.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-52.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 	- Từ R3 ta thấy muốn đi qua mạng 172.16.0.0/16 thì phải đi qua 2 router R1 và R2 nên -> Hop Count = 2 
 	- Nếu có 1 đường từ R1 -> R3 thì R3 sẽ học được đường đó và cập nhật lại bảng định tuyến với Hop Count = 1 và có 2 hướng đi đến mạng `172.16.0.0/26` thì nó quyết định đường tốt hơn và ẩn đường còn lại
 	
-<div align="center">
-  <img src="Images/image-53.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-53.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 	- Cách tính đường đi dựa vào Hop Count sẽ gây ra nhiều vấn đề: 
 		- Chỉ quan tâm đường nào ngắn nhất nhưng tốc độ băng thông đường đó lại thấp hơn so với đường có Hop Count lớn hơn
@@ -954,11 +954,11 @@ show ipv6 route
     	- Vì bản thân con router đã quảng bá cái mạng đó và nó lại học ngược trở về cái mạng đó. Đó là nguyên nhân khiến nó bị loop 
     	- Để tránh loop xảy ra ta nên bật cơ chế chống loop: Nếu mà đứng tại R2 học được đường đi đến mạng `10.0.0.0/8` từ R1 và khi mà nó quảng bá ngược về mạng mà nó biết trong bảng định tuyến từ router láng giềng nó sẽ loại các mạng mà nó học được từ láng giềng này trước đó và R1 không học được đường đi tới và loop không còn xuất hiện nữa
     	
-<div align="center">
-  <img src="Images/image-54.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+		<div align="center">
+			<img src="Images/image-54.png" width="350" alt="alt text">
+			<br>
+			<em></em>
+		</div>
 
     	- Cơ chế này tự động được bật khi cấu hình RIP
     	- Có thể tắt bằng cách vào cổng đó và `no ip split-horizon`
@@ -972,11 +972,11 @@ show ipv6 route
 	- Trường hợp đường đi đến mạng gặp sự cố và sau 30s vẫn không nhận được thông tin định tuyến thì nó vẫn duy trì cái đường đi đó trong vòng 180s nữa kể từ lúc nhận được thông tin định tuyến từ router láng giềng gửi qua
 	- Sau khoảng 180s mà Router vẫn không nhận được thông tin định tuyến từ Router láng giềng thì nó sẽ tăng metric tối đa là 16 và tiếp tục quảng bá cái mạng này cho những con router khác biết ám chỉ mạng này đang gặp sự cố và nó sẽ duy trì trạng thái đó trong vòng 60s nữa và sau 240s thì chính thức xóa mạng đó khỏi thông tin định tuyến.
 	
-<div align="center">
-  <img src="Images/image-55.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-55.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 - Bộ Timer kinh điển của RIP gồm **4 loại**, cụ thể:
 	- **Update Timer (30s)**: định kỳ gửi toàn bộ bảng định tuyến cho router láng giềng
@@ -990,11 +990,11 @@ show ipv6 route
 	- Và RIPv1 được xếp vào nhóm giao thức `classful` khi mà quảng bá định tuyến thì nó chỉ quảng bá `địa chỉ mạng` mà thôi còn RIPv2 được xếp vào nhóm giao thức `classless` tức là nó sẽ quảng bá `địa chỉ mạng và subnet mask`
 		- Sự khác nhau chính là: nếu router đọc vào octet từ RIPv1 gửi tới thì nó sẽ tự quyết định lớp mạng A, B hay C, còn RIPv2 có kèm theo subnet mask nên sẽ biết chính xác prefix length cụ thể là bao nhiêu
 	
-<div align="center">
-  <img src="Images/image-56.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-56.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 ### 9.2.1.1.2. Major Network
 	- Là 1 mạng lớn mà chưa bị chia nhỏ ra và lớp mạng và prefix length phải khớp với nhau thì được gọi là major network
@@ -1016,11 +1016,11 @@ show ipv6 route
 	show ip route rip
 	```
 	
-<div align="center">
-  <img src="Images/image-58.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-58.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 	- Quảng bá default route: `default-information originate` trên con router biên kết nối trực tiếp với internet, sẽ quảng bá default route vào các thiết bị bên trong; nếu router biên bị mất kết nối với internet thì bảng định tuyến sẽ tự động xóa thông tin định tuyến này
 - RIP vẫn là kiến thức nền tảng bắt buộc phải nắm cho kỳ thi CCNA (đại diện cho nhóm Distance Vector), nhưng trong triển khai hạ tầng mạng doanh nghiệp thực tế hiện nay **hầu như không còn ai sử dụng RIP** do hội tụ chậm, giới hạn 15 hop, chỉ dựa vào hop count nên không tối ưu. Thực tế các doanh nghiệp chủ yếu dùng **OSPF** (nội bộ, đa hãng), **EIGRP** (nội bộ, riêng hệ sinh thái Cisco) và **BGP** (giữa các nhà cung cấp dịch vụ/AS với nhau).
@@ -1036,11 +1036,11 @@ show ipv6 route
 	- Quá trình trên đảm bảo các router trên router là hoàn toàn giống nhau nên đứng tại 1 con router bất kỳ thì ta có thể quan sát được bảng topology của toàn bộ hệ thống mạng trong cùng 1 vùng area 
 	- Sử dụng giải thuật `Dijkstra algorithm` để tính toán trên bảng topology cái đường nào là tốt nhất sau đó đưa những đường này vào bảng định tuyến và router sẽ định tuyến gói tin dựa vào bảng `routing table`
 	
-<div align="center">
-  <img src="Images/image-59.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-59.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 - Cấu hình OSPF
 	```
@@ -1053,16 +1053,17 @@ show ipv6 route
 	- Dựa vào IP tham chiếu và wildcard mask bất kể cổng giao tiếp nào mà có 24 bit đầu tiên trùng với IP tham chiếu thì sẽ được tham gia vào định tuyến 
 	- Có thể đặt cổng giao tiếp thành `network 192.168.1.1 0.0.0.0 area 0` để cho cổng đó tham gia vào định tuyến hoàn toàn được và nó sẽ quảng bá nguyên cái mạng 192.168.1.0/24
 	- Vào để xác định chính xác 1 cổng có tham gia vào định tuyến thì ta vào cổng đó và thiết lập ospf lên
-	```
-	int e0/1
-		ip ospf 1 area 0
-	```
+
+		```
+		int e0/1
+			ip ospf 1 area 0
+		```
 	
-<div align="center">
-  <img src="Images/image-60.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-60.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 	- Để tất cả các cổng trên router tham gia định tuyến thì: `network 0.0.0.0 255.255.255.255 area 0 `
 	- Kiểm tra các cổng tham gia vào định tuyến: `show ip ospf int brief`
@@ -1071,11 +1072,11 @@ show ipv6 route
 	- Nếu hệ thống mạng quá lớn thì ta nên chia ra thành nhiều vùng area giúp giảm tải xử lý cho thiết bị
 	- Nếu có 2 area, giả sử 1 route bất kỳ trong vùng area 1 gặp sự cố up, down liên tục thì lúc này nó sẽ lan truyền thông tin không ổn định này cho những con router thuộc area 1 mà thôi, và khi nhận được thông tin về sự bất ổn định thì nó sẽ chạy giải thuật `Dijkstra` hay `Shortest Path First (SPF)` để tính toán đường khác thay thế, và các con router ở vùng area 0 thì sẽ không bị ảnh hưởng bởi vùng area 1
 	
-<div align="center">
-  <img src="Images/image-61.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-61.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 - Default route:
 	- Không nên triển khai định tuyến tĩnh trên cái môi trường có dự phòng bởi không có khả năng tương thích nhanh với hệ thống mạng.
@@ -1125,11 +1126,11 @@ show ipv6 route
 	- Point-to-point: Môi trường kết nối 2 con Router với nhau thông qua công nghệ `Leased Line`, cho phép kết nối 2 hệ thống mạng LAN cách xa nhau từ vài chục đến vài trăm cây số, thông qua môi trường truyền dẫn cáp quang hoặc cáp đồng tùy theo nhà cung cấp dịch vụ mà ta sử dụng
 		- Các Router sẽ thiết lập mối quan hệ neighbor ngang hàng với nhau 
 	
-<div align="center">
-  <img src="Images/image-62.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-62.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 	- Ethernet Protocol: từ 1 Router có thể kết nối đến 1 switch và từ 1 switch có thể được kết nối với nhiều các môi trường khác nữa gọi và mặc định network type là Broadcast Multiaccess
 		- Cần phải trải qua quá trình bầu chọn DR, BDR và DROTHER, quá trình bầu chọn diễn ra trong 40s
@@ -1137,11 +1138,11 @@ show ipv6 route
 			- `BDR (Backup Designated Router)`: đóng vai trò là backup cho DR và tất cả các thiết bị còn lại đóng vai trò là `DROTHER` 
 		- Khi thông thường khi các con router thành viên có thông tin định tuyến gì mới thì nó sẽ soạn 1 bảng tin `SLU (Link state Update)` và gửi về cho DR với Multicast đặc biệt là `224.0.0.6` và khi DR nhận được bảng tin đó thì nó sẽ gửi ra tất cả các Router thành viên còn lại. Nếu lắp đặt 1 Router mới thì DR đứng ra quảng bá tất cả các thông tin định tuyến trên hạ tầng mạng mới này
 		
-<div align="center">
-  <img src="Images/image-63.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+		<div align="center">
+			<img src="Images/image-63.png" width="350" alt="alt text">
+			<br>
+			<em></em>
+		</div>
 
 		- Tiến trình bầu chọn DR, BDR dựa vào 2 tham số `priority` và `router-id`:
 			- priority (chỉ số ưu tiên) thiết bị nào có chỉ số ưu tiên cao nhất thì thiết bị đó là DR và cao nhì là BDR còn lại là DROTHER
@@ -1186,12 +1187,12 @@ show ipv6 route
 	- IANA: cơ quan quản lý địa chỉ mạng quốc tế, mỗi nhà cung cấp dịch vụ mạng sẽ được định danh duy nhất bằng 1 số ASN
 	- Dãy AS Number (Public): dao động từ 1 - 64495
 	- Private AS Number: 64512-65534
-	
-<div align="center">
-  <img src="Images/image-65.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+		
+	<div align="center">
+		<img src="Images/image-65.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 	- Định kỳ gửi `hello` 60s 1 lần 
 	- Kiểm tra bgp: `show ip bgp summary`
@@ -1222,6 +1223,7 @@ Kiến thức nền tảng về ICMP:
 </div>
 
 - Thực hiện
+
 	```
 	vlan 2
 		name VLAN guest
@@ -1235,18 +1237,19 @@ Kiến thức nền tảng về ICMP:
 - Kết nối giữa các switch gom tất cả các switch vật lý trở thành 1 switch vật lý 
 - Nếu trên 2 switch vật lý cùng tạo VLAN 2 và kết nối trunk thì 2 PC trên mỗi vlan sẽ giao tiếp được với nhau
 	
-<div align="center">
-  <img src="Images/image-67.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-67.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 - VLAN và Trunk có thể được phối hợp với nhau để phục vụ việc bảo mật và nếu muốn các VLAN có thể truy cập được với nhau thì ta cần phải có 1 con router hoặc switch layer 3
 - Ở router mỗi cỗng sẽ ứng với gateway của VLAN và thuộc vlan đó nhằm mục đích định tuyến với các vlan khác và truy cập internet
 - Giúp tiết kiệm port và số lượng kết nối nếu mode access thì cần phải có nhiều dây tương ứng còn trunk thì chỉ cần 2 port và 1 dây 
 - Khi 1 PC ở VLAN 2 gửi dữ liệu tới PC ở VLAN 2 phía bên kia switch, đầu tiên switch phải `gắn nhãn` thông tin `VLAN` mà PC gửi thuộc về, phía bên nhận sẽ căn cứ vào nhãn VLAN đó để biết dữ liệu này thuộc VLAN nào
 ### 11.2.1. Cấu hình trunk 
-- Trunk có 2 kiểu đóng gói 1 dot1q kiểu quốc tế, 2 ISL trunk độc quyền cisco
+- Trunk có 2 kiểu đóng gói 1 `dot1q` kiểu quốc tế, 2 `ISL` trunk độc quyền cisco
+
 	```
 	int f0/1
 		sw trunk encapsulation dot1q
@@ -1273,11 +1276,11 @@ Kiến thức nền tảng về ICMP:
 	- Đảm bảo database VLAN giữa các switch sẽ được đồng bộ với nhau để tránh lỗi
 	- VTP domain: nhóm các switch cùng đồng bộ VLAN với nhau, cần phải tham gia vào cùng 1 VTP domain: `vtp domain AnPhuc` và hoạt động ở chế độ `server` hoặc `client` hoặc `transparent`
 	
-<div align="center">
-  <img src="Images/image-69.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-69.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 - VTP (đặc biệt VTPv1/v2) tiềm ẩn rủi ro rất lớn trong triển khai thực tế: nếu gắn nhầm 1 switch mới (dù chưa cấu hình VLAN gì) vào hệ thống nhưng lại có **VTP revision number cao hơn** switch Server hiện tại, toàn bộ database VLAN của cả hệ thống có thể bị **ghi đè hoặc xóa sạch**, gây sập mạng diện rộng. Vì lý do này, nhiều tổ chức trong thực tế khuyến cáo: luôn để switch ở chế độ `vtp mode transparent` (không đồng bộ tự động) hoặc nếu bắt buộc dùng VTP thì nên dùng **VTPv3** (hỗ trợ đặt password xác thực domain + chỉ định rõ Primary Server) để tránh rủi ro nêu trên.
 ### 11.2.2. Định tuyến giữa các vlan 
@@ -1315,11 +1318,11 @@ Kiến thức an toàn bảo mật liên quan VLAN, hay xuất hiện trong đ�
 ## 12.1. Mô hình thiết kế hạ tầng mạng 3 phân lớp
 - Một hệ thống 3 phân lớp: core, distribution, Access
 	
-<div align="center">
-  <img src="Images/image-70.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-70.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 	- Ở tầng access: có thể sử dụng những thiết bị cấp thấp hỗ trợ các port kết nối với các thiết bị đầu cuối, hỗ trợ cấp nguồn PoE và hỗ trợ bảo mật L2
 	- Distribution: hỗ trợ những dòng SWL3 mạnh mẽ hơn, đảm bảo các cổng phù hợp để kết nối đến tầng core, hỗ trợ policy, giữa những sw với nhau thì nên để các cổng là 1Gi hoặc 10Gi
@@ -1328,20 +1331,20 @@ Kiến thức an toàn bảo mật liên quan VLAN, hay xuất hiện trong đ�
 ## 12.2. Nguyên nhân xảy ra loop 
 - Thường bị khi kết nối ở dạng vòng `ring`
 	
-<div align="center">
-  <img src="Images/image-71.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-71.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 	- Khi có 3 sw kết nối dạng vòng và gửi đi bảng tin `broadcast` thì nó sẽ lan truyền cho nhau và sw đều nhận được frame này và nó sẽ hình thành loop
 - Khi 2 switch kết nối với nhau sử dụng 2 dây 2 sw sẽ liên tục gửi qua gửi lại
 	
-<div align="center">
-  <img src="Images/image-72.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-72.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 ## 12.3. Cơ chế chống Loop của STP
 ### 12.3.1. Block port (alternated Port)
@@ -1359,11 +1362,11 @@ Kiến thức an toàn bảo mật liên quan VLAN, hay xuất hiện trong đ�
 	- Hiệu chỉnh giá trị priority: `spanning-tree vlan 1 priority 28672`
 	- Nếu giá trị priority bằng nhau thì nó bầu chọn trên nguyên tắc chọn MAC nhỏ nhất thì đóng vai trò RB
 
-<div align="center">
-  <img src="Images/image-73.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image-73.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
 ### 12.4.2. Bầu chọn Root Port
 - Không bao giờ xảy ra trên Root Bridge, và sẽ tiến hành trên các sw là non RB 
