@@ -486,7 +486,7 @@ Cấu trúc `IPv4` chia thành 2 phần
 	</div>
 
 	- Chuyển đổi thập phân sang nhị phân
-		- Đầu tiên viết 8 số giảm dần `1, 2, 4, 8, 32, 64, 128` sau đó đưa số đó vào phần lớn nhất rồi còn lại đưa vào các ô khác sao cho vừa đủ rồi đánh các số có khớp ở dưới thành 1 và các số không khớp ở dưới đánh 0
+		- Đầu tiên viết 8 số giảm dần `1, 2, 4, 8, 16, 32, 64, 128` sau đó đưa số đó vào phần lớn nhất rồi còn lại đưa vào các ô khác sao cho vừa đủ rồi đánh các số có khớp ở dưới thành 1 và các số không khớp ở dưới đánh 0
 		- VD: 192 = 128 + 64 -> `11000000`
 		- VD: 80 = 64 + 16 -> `01010000`
 		- VD: 170 = 128 + 32 + 8 + 2 -> `10101010`
@@ -662,7 +662,7 @@ show ipv6 route
 - Xem các thiết bị láng giềng: `show cdp neighbors` 
 	
 	<div align="center">
-		<img src="Images/image-37.png" width="350" alt="alt text">
+		<img src="Images/image-37.png" width="550" alt="alt text">
 		<br>
 		<em></em>
 	</div>
@@ -774,24 +774,25 @@ show ipv6 route
 - Kiểm tra định tuyến: `show ip route`
 	
 	<div align="center">
-		<img src="Images/image-39.png" width="350" alt="alt text">
+		<img src="Images/image-39.png" width="550" alt="alt text">
 		<br>
 		<em></em>
 	</div>
 
 - Nếu 2 router khác nhau thì các dãy mạng ở mỗi router không thể kết nối được với nhau bởi vì bảng định tuyến ở mỗi router đều không có đường đi đến lẫn nhau cho nên phải thêm đường đi cho chúng 
 	- R1
-	```
-	ip route 10.0.4.0 255.255.255.0 10.0.12.2
-	ip route 10.0.5.0 255.255.255.0 10.0.12.2
-	ip route 10.0.6.0 255.255.255.0 10.0.12.2
-	```
+
+		```
+		ip route 10.0.4.0 255.255.255.0 10.0.12.2
+		ip route 10.0.5.0 255.255.255.0 10.0.12.2
+		ip route 10.0.6.0 255.255.255.0 10.0.12.2
+		```
 	- R2
-	```
-	ip route 10.0.1.0 255.255.255.0 10.0.12.1
-	ip route 10.0.2.0 255.255.255.0 10.0.12.1
-	ip route 10.0.3.0 255.255.255.0 10.0.12.1
-	```
+		```
+		ip route 10.0.1.0 255.255.255.0 10.0.12.1
+		ip route 10.0.2.0 255.255.255.0 10.0.12.1
+		ip route 10.0.3.0 255.255.255.0 10.0.12.1
+		```
 ### 9.1.1. Cơ chế hoạt động của Static Route
 - Đọc vào IP đích, kiểm tra bảng định tuyến sau đó chuyển tiếp dữ liệu ra đúng cổng tương ứng có trong bảng định tuyến
 - Nếu IP đích không nằm trong bảng định tuyến thì Router sẽ tiến hành hủy gói tin (drop)
@@ -799,7 +800,7 @@ show ipv6 route
 	- `ip route 0.0.0.0 0.0.0.0 f0/0` (hạn chế sử dụng outbound interface để tránh làm giảm hiệu năng trong quá trình sử dụng)
 	
 	<div align="center">
-		<img src="Images/image-40.png" width="350" alt="alt text">
+		<img src="Images/image-40.png" width="550" alt="alt text">
 		<br>
 		<em></em>
 	</div>
@@ -807,7 +808,7 @@ show ipv6 route
 - Và muốn dữ liệu mạng bên trong đi ra được internet thì ta cần NAT để có thể đi ra được internet
 	
 	<div align="center">
-		<img src="Images/image-41.png" width="350" alt="alt text">
+		<img src="Images/image-41.png" width="550" alt="alt text">
 		<br>
 		<em></em>
 	</div>
@@ -818,7 +819,7 @@ show ipv6 route
 - Ví dụ có 2 vùng mạng từ PCA sang PCB như ở hình:
 	
 	<div align="center">
-		<img src="Images/image-42.png" width="350" alt="alt text">
+		<img src="Images/image-42.png" width="550" alt="alt text">
 		<br>
 		<em></em>
 	</div>
@@ -837,9 +838,9 @@ show ipv6 route
 	- Tuy nhiên nếu IP đích là `30.0.0.8` thì nó lại gửi ARP request và R2 cũng tuyên bố tương tự là MAC của chính nó, tương tự với mọi địa chỉ khác trong cùng lớp mạng đó -> khiến bảng ARP table phình to ra rất nhiều, làm ảnh hưởng đến hiệu năng và khả năng định tuyến của Router này
 ### 9.1.3. Cấu hình cân bằng tải (Load Balancing)
 - Tại router ta có 2 đường đi đến mạng đích thì lúc này ta có thể cấu hình 2 static route đến cùng mạng đích này 
-	
+
 	<div align="center">
-		<img src="Images/image-44.png" width="350" alt="alt text">
+		<img src="Images/image-44.png" width="550" alt="alt text">
 		<br>
 		<em></em>
 	</div>
@@ -856,21 +857,21 @@ show ipv6 route
 - Theo nguyên tắc là AD càng nhỏ thì đường đó càng tin cậy 
 	
 	<div align="center">
-		<img src="Images/image-46.png" width="350" alt="alt text">
+		<img src="Images/image-46.png" width="550" alt="alt text">
 		<br>
 		<em></em>
 	</div>
 
 		
 	<div align="center">
-		<img src="Images/image-47.png" width="350" alt="alt text">
+		<img src="Images/image-47.png" width="550" alt="alt text">
 		<br>
 		<em></em>
 	</div>
 
 		
 	<div align="center">
-		<img src="Images/image-48.png" width="350" alt="alt text">
+		<img src="Images/image-48.png" width="550" alt="alt text">
 		<br>
 		<em></em>
 	</div>
@@ -950,8 +951,8 @@ show ipv6 route
 		- Chỉ quan tâm đường nào ngắn nhất nhưng tốc độ băng thông đường đó lại thấp hơn so với đường có Hop Count lớn hơn
 	- Tóm tắt cơ chế hoạt động: cứ 30s 1 lần thì Router sẽ có những thông tin gì trong bảng định tuyến thì nó sẽ gửi hết qua cho thiết bị láng giềng với metric là 0 và router láng giềng sẽ kiểm tra những mạng mà router vừa gửi qua có trong bảng định tuyến của nó hay chưa nếu mà chưa có thì nó sẽ cập nhật vào bảng định tuyến và nó sẽ + metric thêm 1 và gửi ngược lại tất cả mạng mà nó biết qua router láng giềng lại. Và sau 1 khoảng thời gian nhất định thì các con router sẽ học được route của nhau
     - **Cơ chế chống loop Split Horizon**
-    	- Nếu mạng ở router gặp sự cố và ngay lập tức nó sẽ xóa cái đường đi đến mạng đó sau đó router láng giềng vẫn còn cái thông tin đi đến mạng đó và nó bắt đầu quảng bá ngược lại cái đường đi cho route và nó sẽ học được và + metric thêm 1 đơn vị và nó có nguy cơ bị loop.
-    	- Vì bản thân con router đã quảng bá cái mạng đó và nó lại học ngược trở về cái mạng đó. Đó là nguyên nhân khiến nó bị loop 
+    	- Nếu mạng ở router gặp sự cố và ngay lập tức nó sẽ xóa cái đường đi đến mạng đó, tuy nhiên router láng giềng vẫn còn cái thông tin đi đến mạng đó và nó bắt đầu quảng bá ngược lại cái đường đi cho route và nó sẽ học được và + metric thêm 1 đơn vị và nó có nguy cơ bị loop.
+    	- **Vì bản thân con router đã quảng bá cái mạng đó và nó lại học ngược trở về cái mạng đó. Đó là nguyên nhân khiến nó bị loop**
     	- Để tránh loop xảy ra ta nên bật cơ chế chống loop: Nếu mà đứng tại R2 học được đường đi đến mạng `10.0.0.0/8` từ R1 và khi mà nó quảng bá ngược về mạng mà nó biết trong bảng định tuyến từ router láng giềng nó sẽ loại các mạng mà nó học được từ láng giềng này trước đó và R1 không học được đường đi tới và loop không còn xuất hiện nữa
     	
 		<div align="center">
