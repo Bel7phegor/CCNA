@@ -501,8 +501,6 @@ Cấu trúc `IPv4` chia thành 2 phần
 	- Lớp B: trong số `8bit` đầu tiên thì `2bit đầu tiên` luôn luôn bằng **10**:  **[128 - 191]** thay đổi 6 bit còn lại
 	- Lớp C: trong số `8bit` đầu tiên thì `3bit đầu tiên` luôn luôn bằng **110**: **[192 - 223]** thay đổi 5 bit còn lại
 
-> **⚠️ Quan trọng (Bổ sung bảng tổng hợp còn thiếu)**:
->
 > | Lớp | Octet đầu | Subnet mask mặc định | Prefix mặc định | Số bit host |
 > |---|---|---|---|---|
 > | A | 1 - 127 | 255.0.0.0 | /8 | 24 |
@@ -566,10 +564,10 @@ Cấu trúc `IPv4` chia thành 2 phần
 
 - Với dãy mạng trên thì ta có dãy địa chỉ từ [0-255] và địa chỉ đầu là net-add và địa chỉ cuối là Broadcast-add và không thể gán 2 địa chỉ ip này cho hệ thống 
 
-> **⚠️ Quan trọng (Bổ sung công thức còn thiếu)**: Số lượng địa chỉ IP **thực sự gán được** cho thiết bị trong 1 mạng con luôn là:
-> **Số host khả dụng = 2^(số bit host) − 2** (trừ đi 1 địa chỉ mạng - network address và 1 địa chỉ quảng bá - broadcast address, vì 2 địa chỉ này không được gán cho thiết bị)
-> - VD: mạng `/24` có 8 bit host -> 2^8 − 2 = **254 host** khả dụng (chứ không phải 256)
-> - VD: mạng `/30` (thường dùng cho kết nối point-to-point giữa 2 router) có 2 bit host -> 2^2 − 2 = **2 host** khả dụng, vừa đủ cho 2 đầu router
+- Số lượng địa chỉ IP **thực sự gán được** cho thiết bị trong 1 mạng con luôn là:
+  - **Số host khả dụng = 2^(số bit host) − 2** (trừ đi 1 địa chỉ mạng - network address và 1 địa chỉ quảng bá - broadcast address, vì 2 địa chỉ này không được gán cho thiết bị)
+	- VD: mạng `/24` có 8 bit host -> 2^8 − 2 = **254 host** khả dụng (chứ không phải 256)
+	- VD: mạng `/30` (thường dùng cho kết nối point-to-point giữa 2 router) có 2 bit host -> 2^2 − 2 = **2 host** khả dụng, vừa đủ cho 2 đầu router
 	
 	<div align="center">
 		<img src="Images/image-25.png" width="350" alt="alt text">
@@ -817,7 +815,7 @@ show ipv6 route
 	- tìm cách gửi bí mật cái mật khẩu này cho R1
 	- Sử dụng mật mã này để mã hóa dữ liệu
 
-> **📌 (Bổ sung làm rõ)**: Mô tả trên là cách diễn giải đơn giản hóa để dễ hình dung. Trong thực tế, SSH sử dụng thuật toán trao đổi khóa **Diffie-Hellman (DH)** để 2 bên cùng thống nhất ra 1 khóa phiên (session key) **đối xứng** dùng chung mà không cần truyền trực tiếp khóa đó qua mạng; cặp khóa bất đối xứng RSA của Server chủ yếu dùng để **xác thực danh tính Server** (tránh tấn công Man-in-the-Middle) trong bước bắt tay ban đầu, còn toàn bộ dữ liệu phiên làm việc sau đó được mã hóa bằng khóa đối xứng (AES) vì mã hóa đối xứng có tốc độ xử lý nhanh hơn nhiều so với mã hóa bất đối xứng.
+> Mô tả trên là cách diễn giải đơn giản hóa để dễ hình dung. Trong thực tế, SSH sử dụng thuật toán trao đổi khóa **Diffie-Hellman (DH)** để 2 bên cùng thống nhất ra 1 khóa phiên (session key) **đối xứng** dùng chung mà không cần truyền trực tiếp khóa đó qua mạng; cặp khóa bất đối xứng RSA của Server chủ yếu dùng để **xác thực danh tính Server** (tránh tấn công Man-in-the-Middle) trong bước bắt tay ban đầu, còn toàn bộ dữ liệu phiên làm việc sau đó được mã hóa bằng khóa đối xứng (AES) vì mã hóa đối xứng có tốc độ xử lý nhanh hơn nhiều so với mã hóa bất đối xứng.
 ## 8.1. Câu lệnh cấu hình
 - Khai báo host name sau đó khai báo ip domain-name 
 	```
@@ -1414,9 +1412,11 @@ Kiến thức an toàn bảo mật liên quan VLAN, hay xuất hiện trong đ�
 - Sử dụng cơ chế block port để hạn chế loop trên hạ tầng mạng
 - Khi STP được bật nó sẽ phối hợp với nhau và tính toán xem nên khóa cổng nào và từ đó tránh được nguy cơ bị loop trên hệ thống mạng, và không thể nhận được tin `broadcast hay bất kì bản tin nào` nên sẽ chống loop được.
 ## 12.4. Root Bridge và vai trò Port Role của các Port
+
+- STP là giao thức chạy ở tầng 2 giữa các **Switch**
 - STP sẽ trải qua 4 giai đoạn để tính toán port nào là block port
 ### 12.4.1. Bầu chọn Root Bridge
-- **📌 (Sửa lỗi)** Trong toàn bộ hệ thống mạng (1 VLAN), chỉ có **duy nhất 1 Switch** được bầu làm Root Bridge (RB) — bản gốc ghi nhầm là "Router", nhưng STP là giao thức chạy ở tầng 2 giữa các **Switch**, không phải Router
+- Trong toàn bộ hệ thống mạng (1 VLAN), chỉ có **duy nhất 1 Switch** được bầu làm Root Bridge (RB)
 - Chỉ có RB mới được quyền chủ động gửi bản tin hello, các port còn lại chỉ chuyển tiếp lại
 - Định kỳ gửi hello 2s 1 lần, các port còn lại chuyển tiếp qua designated port để đến được switch láng giềng
 - Nguyên tắc bầu chọn:
@@ -1453,9 +1453,8 @@ Kiến thức an toàn bảo mật liên quan VLAN, hay xuất hiện trong đ�
 - Có quyền gửi bản tin hello
 - Port không nhận được bản tin hello sau 10 lần thì nó khẳng định đoạn mạng đó gặp sự cố và mở port block
 ### 12.4.4. Alternate Port (Block Port)
-- Port dự phòng, cho phép dữ liệu đi qua 
+- Port dự phòng, không cho phép dữ liệu đi qua 
 
-Tiếp tục hoàn chỉnh chủ đề chống Loop STP với các nội dung bên dưới.
 ## 12.5. Các trạng thái cổng (Port State) của STP
 - Khi 1 port bật lên thì STP (802.1D) không chuyển ngay sang trạng thái forward mà phải trải qua các trạng thái trung gian để tránh loop tạm thời:
 	- **Blocking**: không gửi/nhận dữ liệu, chỉ lắng nghe bản tin BPDU (20s)
