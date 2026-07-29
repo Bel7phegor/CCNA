@@ -1,5 +1,5 @@
 # 1. Mạng cơ bản 
-- 2 Thiết bị có thể chia sẻ file và móc nối được với nhau thì đã được gọi là hệ thống mạng rồi
+- Về bản chất, khi 2 thiết bị có thể **chia sẻ tài nguyên** (file, máy in, dữ liệu,...) và **kết nối được với nhau** qua một phương tiện truyền dẫn nào đó, thì đã có thể gọi đó là một hệ thống mạng (network)
 ## 1.1. Các đặc điểm của 1 hệ thống mạng 
 - Khi thiết kế/đánh giá 1 hệ thống mạng, cần quan tâm đến các đặc điểm sau:
 	- **Topology (Sơ đồ hình học)**: cách bố trí vật lý (Physical Topology - dây cáp, thiết bị đặt ở đâu) và cách bố trí logic (Logical Topology - luồng dữ liệu di chuyển như thế nào) của hệ thống mạng
@@ -23,24 +23,44 @@
 - Mô hình OSI (Open Systems Interconnection) là mô hình tham chiếu gồm **7 tầng**, mô tả cách dữ liệu được xử lý và truyền đi giữa các thiết bị trong hệ thống mạng, mỗi tầng chỉ giao tiếp trực tiếp với tầng ngay trên và ngay dưới nó
 - Thứ tự 7 tầng từ trên xuống: **Application (7) – Presentation (6) – Session (5) – Transport (4) – Network (3) – Data Link (2) – Physical (1)**
 ### 2.1.1. Lớp Application (Tầng 7)
-- Tiếp xúc thường xuyên nhất tiếp xúc thông qua các ứng dụng, chrome, mail out look 
-- Các giao thức: 
-	- SMTP: dùng để gửi mail tới server 
-	- Lấy mail về có 2 option:
-    	- POP3: Lấy mail về và lưu trữ mail cục bộ tại máy tính và xóa mail trên server
-    	- IMAP: Móc nối tới mail server lấy cái bản sao của mail về chứ không có xóa mail trên server
-	- FTP: Truyền chia sẻ file 
-    	- FTP Client
-    	- FTP Server
-	- HTTP, HTTPS:
+- Là tầng mà người dùng **tiếp xúc trực tiếp và thường xuyên nhất** thông qua các ứng dụng như trình duyệt web (Chrome), phần mềm gửi nhận mail (Outlook),...
+- Cần lưu ý đây **không phải** là bản thân ứng dụng, mà là các **giao thức chuẩn hóa** mà ứng dụng đó sử dụng để giao tiếp qua mạng
+- Các giao thức tiêu biểu: 
+	- **SMTP (Simple Mail Transfer Protocol)**: dùng để **gửi** mail đi (từ Client lên Server, hoặc giữa các Mail Server với nhau), port mặc định `25`
+	- Lấy mail **về** có 2 lựa chọn:
+    	- **POP3 (Post Office Protocol v3)**: Tải mail về máy cục bộ và **xóa mail trên server** sau khi tải xong (mặc định), port `110`
+    	- **IMAP (Internet Message Access Protocol)**: Đồng bộ và giữ **bản sao** của mail, không xóa mail trên server, cho phép xem cùng 1 hộp thư từ nhiều thiết bị khác nhau, port `143`
+	- **FTP (File Transfer Protocol)**: Truyền/chia sẻ file giữa FTP Client và FTP Server, sử dụng **2 kênh** riêng biệt: port `21` (điều khiển - control) và port `20` (truyền dữ liệu - data)
+	- **HTTP/HTTPS**: giao thức truyền tải nội dung web
+		- `HTTP` (HyperText Transfer Protocol): port `80`, dữ liệu truyền dạng **rõ (plain-text)**, không mã hóa
+		- `HTTPS` (HTTP Secure): port `443`, là HTTP được bọc thêm lớp mã hóa `TLS/SSL` (hoạt động ở tầng Presentation) giúp bảo mật dữ liệu truyền đi
     
-<div align="center">
-  <img src="Images/image.png" width="350" alt="alt text">
-  <br>
-  <em></em>
-</div>
+	<div align="center">
+		<img src="Images/image.png" width="350" alt="alt text">
+		<br>
+		<em></em>
+	</div>
 
-	- Ngoài ra còn có các giao thức khác cũng hoạt động ở tầng này: `DNS` (phân giải tên miền thành địa chỉ IP), `DHCP` (cấp phát IP tự động), `Telnet/SSH` (truy cập từ xa)
+	- Ngoài ra còn có các giao thức khác cũng hoạt động ở tầng này: `DNS` (port 53 - phân giải tên miền thành địa chỉ IP), `DHCP` (port 67/68 - cấp phát IP tự động), `Telnet` (port 23)/`SSH` (port 22) (truy cập từ xa)
+
+> **Bảng port quen thuộc hay được hỏi trong đề thi CCNA (bổ sung mới):**
+
+| Giao thức | Port | Transport |
+|---|---|---|
+| FTP (control/data) | 21 / 20 | TCP |
+| SSH | 22 | TCP |
+| Telnet | 23 | TCP |
+| SMTP | 25 | TCP |
+| DNS | 53 | TCP/UDP |
+| DHCP (Server/Client) | 67 / 68 | UDP |
+| TFTP | 69 | UDP |
+| HTTP | 80 | TCP |
+| POP3 | 110 | TCP |
+| NTP | 123 | UDP |
+| IMAP | 143 | TCP |
+| SNMP (agent/trap) | 161 / 162 | UDP |
+| HTTPS | 443 | TCP |
+| Syslog | 514 | UDP |
 ### 2.1.2. Lớp Presentation (Tầng 6)
 - Chịu trách nhiệm **định dạng, mã hóa (encryption) và nén (compression)** dữ liệu để tầng Application phía bên nhận có thể hiểu được đúng định dạng dữ liệu mà bên gửi đã gửi đi
 - Các chuẩn định dạng phổ biến ở tầng này: `JPEG, GIF, PNG` (hình ảnh), `MP3, MPEG` (âm thanh/video), `ASCII` (văn bản)
@@ -145,7 +165,7 @@ L3: packet (data,ip)
 	- Khi segment được gửi đi mà không nhận được hồi đáp về, bị mất mát trong quá trình truyền thông thì máy truyền ở 1 thời gian nhất định khi gửi segment 3 mà không thấy hồi áp ACK trở về thì nó sẽ chủ động gửi lại segment cho đến khi nhận được hồi đáp ACK.
 	- Không bị mất mát dữ liệu.
 #### 2.4.2.1. Cơ chế điều khiển luồn Flow Control 
-	- Để cải thiện tốc độ thì TCP sử dụng tham số `Windown size` áp dụng trong kỹ thuật **Flowc Control** luồn lưu lượng trong hệ thống
+- Để cải thiện tốc độ thì TCP sử dụng tham số `Windown size` áp dụng trong kỹ thuật **Flowc Control** luồn lưu lượng trong hệ thống
 	- 32 bit sequence number: đánh số thứ tự 
 	- 32 bit Acknowledgment number: báo nhận ACK 
 	- Windown size là trường có trong `TCP header` 
@@ -185,6 +205,30 @@ L3: packet (data,ip)
 	- Không cần trải qua việc bắt tay 3 bước và lúc này khi có dữ liệu cần truyền thì nó sẽ phân mảnh dữ liệu ra thành nhiều phần và lần lượt gửi các phân mảnh dữ liệu đi mà không cần phải đánh stt và gửi với tốc độ ồ ạt và nhanh, nhưng không có khả năng phục hồi lại dữ liệu đã mất 
 - Ví dụ trong một cuộc điện thoại VoIP mà muốn  thiết lập thì nó vẫn sử dụng TCP rồi nó sẽ chủ động thiết lập 2 luồng UDP: 1 luồng để truyền tín hiệu từ trái sang phải và 1 luồng UDP khác từ phải sang trái 
 - Chứa Port nguồn và Port Đích
+
+## 2.5.Cấu trúc Header quan trọng cần nhớ
+
+### 2.5.1. IPv4 Header (tầng Network)
+- **Version**: phiên bản IP (4 cho IPv4)
+- **Header Length (IHL)**: độ dài phần header
+- **TOS/DSCP**: đánh dấu mức ưu tiên QoS cho gói tin
+- **Total Length**: tổng độ dài gói tin (header + data)
+- **Identification, Flags, Fragment Offset**: phục vụ cho việc phân mảnh (fragmentation) gói tin khi kích thước vượt quá MTU cho phép của đường truyền
+- **TTL (Time To Live)**: giới hạn số hop gói tin được phép đi qua, mỗi khi qua 1 Router thì TTL giảm 1, về 0 thì gói tin bị hủy và gửi lại bản tin ICMP `Time Exceeded` — cơ chế này giúp tránh gói tin đi lặp vô hạn khi bị loop
+- **Protocol**: cho biết dữ liệu bên trong thuộc giao thức tầng trên nào (6 = TCP, 17 = UDP, 1 = ICMP)
+- **Source IP / Destination IP**: địa chỉ IP nguồn và đích — 2 trường này **không đổi** trong suốt hành trình gói tin đi qua nhiều Router (khác với địa chỉ MAC ở tầng 2 sẽ bị thay đổi ở mỗi chặng, như đã trình bày ở mục 3.7)
+
+### 2.5.2. TCP Header (tầng Transport)
+- **Source Port / Destination Port**: định danh ứng dụng/phiên làm việc nguồn và đích
+- **Sequence Number**: số thứ tự của byte đầu tiên trong segment, phục vụ sắp xếp lại dữ liệu đúng thứ tự ở bên nhận
+- **Acknowledgment Number**: số thứ tự byte tiếp theo mà bên nhận đang mong đợi nhận, dùng để báo nhận (ACK)
+- **Flags (Control Bits)**: các cờ điều khiển quan trọng: `SYN` (yêu cầu thiết lập kết nối), `ACK` (báo nhận), `FIN` (yêu cầu kết thúc kết nối một cách bình thường), `RST` (buộc hủy kết nối ngay lập tức khi có lỗi), `PSH` (yêu cầu đẩy dữ liệu ngay cho tầng trên không cần đợi buffer đầy)
+- **Window Size**: kích thước cửa sổ nhận (rwnd) — đã giải thích chi tiết ở mục 2.4.2.1
+
+### 2.5.3. UDP Header (tầng Transport)
+- Chỉ gồm **4 trường** nên header rất nhẹ (8 byte, so với TCP header tối thiểu 20 byte): **Source Port, Destination Port, Length (độ dài), Checksum (kiểm tra lỗi cơ bản)**
+- Không có Sequence Number, không có Acknowledgment, không có Window Size — đây chính là lý do UDP nhanh nhưng không tin cậy như đã nói ở mục 2.4.3
+
 # 3. Ethernet LAN
 ## 3.1. Local Area Network (LAN)
 - LAN (Local Area Network) là hệ thống mạng cục bộ, kết nối các thiết bị trong 1 phạm vi địa lý nhỏ (1 phòng, 1 tòa nhà, 1 khuôn viên công ty)
@@ -192,7 +236,8 @@ L3: packet (data,ip)
 - Công nghệ nền tảng phổ biến nhất để xây dựng mạng LAN hiện nay là **Ethernet**, hoạt động dựa trên 2 thiết bị chính: **Switch** (kết nối các thiết bị trong cùng 1 mạng) và **Router** (kết nối và định tuyến giữa các mạng LAN khác nhau)
 ## 3.2. MAC (Hexa)
 - Các thiết bị tham gia cùng 1 mạng LAN được định danh với khái niệm là địa chỉ MAC 
-- Mỗi máy tính muốn tham gia vòa mạng LAN cần phải có card mạng và trên mỗi card mạng thì có 1 địa chỉ MAC riêng (12 số hexa và được rút gọn thành 4 số nhị phân)
+- Mỗi máy tính muốn tham gia vào mạng LAN cần phải có card mạng (NIC) và trên mỗi card mạng có 1 địa chỉ MAC riêng, được **"đốt cứng" (burned-in)** vào phần cứng khi sản xuất
+- Địa chỉ MAC dài **48 bit nhị phân**, được biểu diễn dưới dạng **12 số Hexa**
 
 <div align="center">
   <img src="Images/image-7.png" width="350" alt="alt text">
@@ -290,7 +335,7 @@ Quá trình trao đổi dữ liệu giữa các phân vùng mạng LAN l
   - 24 bit cuối cùng (Vendor Assigned): để định danh cho từng card mạng họ sản xuất ra 
 - Địa chỉ MAC được viết dưới dạng số `hexa` nếu địa chỉ MAC dài 48 bit nhị phân thì cứ 4 bit nhị phân gom thành 1 số hexa vậy nên người ta gom thành `12 số hexa`
 - Cấu trúc số hexa như sau: cứ 2 hexa được ngăn cách bởi dấu `:` hoặc `-` hoặc `cứ 4 số hexa ngăn cách nhau bằng dấu chấm` 
-  - VD: 6400.6A: Card mạng này do hãng nào sản xuất ra 
+  - VD: địa chỉ MAC `6400.6A12.3456` thì `6400.6A` (24 bit đầu - OUI) cho biết card mạng này do hãng nào sản xuất (có thể tra cứu online qua các trang "MAC address lookup"), còn `12.3456` (24 bit cuối) là mã định danh riêng cho từng card mạng của hãng đó
 ## 3.9. Các tiêu chuẩn công nghệ ethernet LAN
 ### 3.9.1. Ethernet
 - IEEE 802.3, chuẩn `10BASE-T`, tốc độ 10 Mbps, chạy trên cáp đồng UTP
@@ -358,7 +403,7 @@ Chúng có thể truyền và nhận dữ liệu đồng thời cùng lúc trên
 Phân biệt cáp UTP và cáp chống nhiễu STP
 ### 3.11.1. Cáp đồng
 - Bên trong có 8 sợi cứ 2 sợi thì lại xoắn lại với nhau để chống nhiễu
-- Có 2 loại UTP (0 có bọc chống nhiễu )và STP (có bọc chống nhiểu)
+- Có 2 loại: **UTP (Unshielded Twisted Pair - không có lớp bọc chống nhiễu)** và **STP (Shielded Twisted Pair - có lớp bọc kim loại chống nhiễu)**, STP thường dùng ở môi trường công nghiệp nhiều nhiễu điện từ nhưng giá thành cao hơn UTP
 - Có nhiều chuẩn phổ biến: 100BASE-TX và 1000BASE-TX
   	- Chữ T gọi là twisted pair 2 sợi nhỏ xoắn lại, giúp chống nhiễu và làm chắc
 
@@ -455,6 +500,16 @@ Cấu trúc `IPv4` chia thành 2 phần
 	- Lớp A: Trong số `8bit` đầu tiên thì `bit đầu tiên` luôn luôn bằng **0**. Chạy từ **[1 - 127]** thay đổi 7 bit còn lại
 	- Lớp B: trong số `8bit` đầu tiên thì `2bit đầu tiên` luôn luôn bằng **10**:  **[128 - 191]** thay đổi 6 bit còn lại
 	- Lớp C: trong số `8bit` đầu tiên thì `3bit đầu tiên` luôn luôn bằng **110**: **[192 - 223]** thay đổi 5 bit còn lại
+
+> **⚠️ Quan trọng (Bổ sung bảng tổng hợp còn thiếu)**:
+>
+> | Lớp | Octet đầu | Subnet mask mặc định | Prefix mặc định | Số bit host |
+> |---|---|---|---|---|
+> | A | 1 - 127 | 255.0.0.0 | /8 | 24 |
+> | B | 128 - 191 | 255.255.0.0 | /16 | 16 |
+> | C | 192 - 223 | 255.255.255.0 | /24 | 8 |
+>
+> Lưu ý: dải `127.x.x.x` tuy về mặt lý thuyết nằm trong lớp A nhưng **không được dùng để đánh địa chỉ cho thiết bị** vì đã được dành riêng làm dải Loopback (xem mục 4.1.5)
 - Chuyển đổi từ `prefix length` thành `subnet mask`
 	- Dựa vào `net-id` để đổi thành prefix length
 	- VD: 10.0.0.8 -> `lớp A`, 8 bit đầu làm net-id -> **/8** 
@@ -510,6 +565,11 @@ Cấu trúc `IPv4` chia thành 2 phần
 	</div>
 
 - Với dãy mạng trên thì ta có dãy địa chỉ từ [0-255] và địa chỉ đầu là net-add và địa chỉ cuối là Broadcast-add và không thể gán 2 địa chỉ ip này cho hệ thống 
+
+> **⚠️ Quan trọng (Bổ sung công thức còn thiếu)**: Số lượng địa chỉ IP **thực sự gán được** cho thiết bị trong 1 mạng con luôn là:
+> **Số host khả dụng = 2^(số bit host) − 2** (trừ đi 1 địa chỉ mạng - network address và 1 địa chỉ quảng bá - broadcast address, vì 2 địa chỉ này không được gán cho thiết bị)
+> - VD: mạng `/24` có 8 bit host -> 2^8 − 2 = **254 host** khả dụng (chứ không phải 256)
+> - VD: mạng `/30` (thường dùng cho kết nối point-to-point giữa 2 router) có 2 bit host -> 2^2 − 2 = **2 host** khả dụng, vừa đủ cho 2 đầu router
 	
 	<div align="center">
 		<img src="Images/image-25.png" width="350" alt="alt text">
@@ -756,6 +816,8 @@ show ipv6 route
 	- Và chỉ có Router sở hữu cái private key mới có thể giải mã được mã hóa này
 	- tìm cách gửi bí mật cái mật khẩu này cho R1
 	- Sử dụng mật mã này để mã hóa dữ liệu
+
+> **📌 (Bổ sung làm rõ)**: Mô tả trên là cách diễn giải đơn giản hóa để dễ hình dung. Trong thực tế, SSH sử dụng thuật toán trao đổi khóa **Diffie-Hellman (DH)** để 2 bên cùng thống nhất ra 1 khóa phiên (session key) **đối xứng** dùng chung mà không cần truyền trực tiếp khóa đó qua mạng; cặp khóa bất đối xứng RSA của Server chủ yếu dùng để **xác thực danh tính Server** (tránh tấn công Man-in-the-Middle) trong bước bắt tay ban đầu, còn toàn bộ dữ liệu phiên làm việc sau đó được mã hóa bằng khóa đối xứng (AES) vì mã hóa đối xứng có tốc độ xử lý nhanh hơn nhiều so với mã hóa bất đối xứng.
 ## 8.1. Câu lệnh cấu hình
 - Khai báo host name sau đó khai báo ip domain-name 
 	```
@@ -997,9 +1059,9 @@ show ipv6 route
 		<em></em>
 	</div>
 
-### 9.2.1.1.2. Major Network
-	- Là 1 mạng lớn mà chưa bị chia nhỏ ra và lớp mạng và prefix length phải khớp với nhau thì được gọi là major network
-	- VD: `10.0.0.0/8` -> Lớp A trùng với prefix length mặc định của nó -> Major network, `10.0.0.0/24` -> lớp A, được gọi là `subnet mạng con` của major network 10.0.0.0/8 
+### 9.2.2. Major Network
+- Là 1 mạng lớn mà chưa bị chia nhỏ ra và lớp mạng và prefix length phải khớp với nhau thì được gọi là major network
+  - VD: `10.0.0.0/8` -> Lớp A trùng với prefix length mặc định của nó -> Major network, `10.0.0.0/24` -> lớp A, được gọi là `subnet mạng con` của major network 10.0.0.0/8 
 	
 <div align="center">
   <img src="Images/image-57.png" width="350" alt="alt text">
@@ -1025,17 +1087,17 @@ show ipv6 route
 
 	- Quảng bá default route: `default-information originate` trên con router biên kết nối trực tiếp với internet, sẽ quảng bá default route vào các thiết bị bên trong; nếu router biên bị mất kết nối với internet thì bảng định tuyến sẽ tự động xóa thông tin định tuyến này
 - RIP vẫn là kiến thức nền tảng bắt buộc phải nắm cho kỳ thi CCNA (đại diện cho nhóm Distance Vector), nhưng trong triển khai hạ tầng mạng doanh nghiệp thực tế hiện nay **hầu như không còn ai sử dụng RIP** do hội tụ chậm, giới hạn 15 hop, chỉ dựa vào hop count nên không tối ưu. Thực tế các doanh nghiệp chủ yếu dùng **OSPF** (nội bộ, đa hãng), **EIGRP** (nội bộ, riêng hệ sinh thái Cisco) và **BGP** (giữa các nhà cung cấp dịch vụ/AS với nhau).
-#### 9.2.1.2. Link-State 
+#### 9.2.2.1. Link-State 
 - Giao thức phổ biến OSPF, EIGRP, IS-IS
 - Ưu điểm: Nếu muốn hệ thống mạng tương thích nhanh với những thay đổi có khả năng xuất hiện trên hạ tầng mạng 
 - Nhược điểm: Tiêu tốn nhiều tài nguyên xử lý của thiết bị như RAM và memory để lưu trữ cái tài nguyên database thông tin về cái đường đi có thể có để khi có bất kỳ hệ thống mạng gặp sự cố thì nó có đường khác thay thế, dự phòng 
-##### 9.2.1.2.1. OSPF
+##### 9.2.2.1.1. OSPF
 - Giải pháp mã nguồn mở với cộng đồng lớn
 - Sẽ quảng bá thông qua giao thức `Partial Update` 
 	- `Partial Update`: Chỉ cần quảng bá những mạng mới nhất mà thôi chứ không cần quảng bá lại mạng trước đó đã gửi qua cho router láng giềng nữa 
-	- Khi 2 router thiết lập láng giềng với nhau thì nó sẽ quảng bá những thông tin cập nhật định tuyến của nó qua cho router láng giềng thông qua địa chỉ multicast đặc biệt là `224.0.0.5` dành riêng cho giao thức OSPF thì cái bảng topology chứa tất cả các đường đi có thể có và nó sẽ quảng bá hết cho router láng giềng và sau này nó cập những thông tin định tuyến mới này và không cần quan tâm đến những cái route mà trước đó nó đã học được
-	- Quá trình trên đảm bảo các router trên router là hoàn toàn giống nhau nên đứng tại 1 con router bất kỳ thì ta có thể quan sát được bảng topology của toàn bộ hệ thống mạng trong cùng 1 vùng area 
-	- Sử dụng giải thuật `Dijkstra algorithm` để tính toán trên bảng topology cái đường nào là tốt nhất sau đó đưa những đường này vào bảng định tuyến và router sẽ định tuyến gói tin dựa vào bảng `routing table`
+- Khi 2 router thiết lập láng giềng với nhau thì nó sẽ quảng bá những thông tin cập nhật định tuyến của nó qua cho router láng giềng thông qua địa chỉ multicast đặc biệt là `224.0.0.5` dành riêng cho giao thức OSPF thì cái bảng topology chứa tất cả các đường đi có thể có và nó sẽ quảng bá hết cho router láng giềng và sau này nó cập những thông tin định tuyến mới này và không cần quan tâm đến những cái route mà trước đó nó đã học được
+  - Quá trình trên đảm bảo các route trên router là hoàn toàn giống nhau nên đứng tại 1 con router bất kỳ thì ta có thể quan sát được bảng topology của toàn bộ hệ thống mạng trong cùng 1 vùng area 
+  - Sử dụng giải thuật `Dijkstra algorithm` để tính toán trên bảng topology cái đường nào là tốt nhất sau đó đưa những đường này vào bảng định tuyến và router sẽ định tuyến gói tin dựa vào bảng `routing table`
 	
 	<div align="center">
 		<img src="Images/image-59.png" width="350" alt="alt text">
@@ -1081,11 +1143,11 @@ show ipv6 route
 
 - Default route:
 	- Không nên triển khai định tuyến tĩnh trên cái môi trường có dự phòng bởi không có khả năng tương thích nhanh với hệ thống mạng.
-	```
-	ip route 0.0.0.0 0.0.0.0 f0/0
-	router ospf 1
-		default-information originate
-	```
+		```
+		ip route 0.0.0.0 0.0.0.0 f0/0
+		router ospf 1
+			default-information originate
+		```
 	- Nếu có 2 hướng đi ra internet thì nó tự động cân bằng tải 50 50 nếu 1 bên gặp sự cố và nó sẽ không quảng bá default route nữa và xóa đi, nếu khôi phục trở về thì tiếp tục quảng bá
 	- Bảng tin hello 10s 1 lần và sau 4 lần 40s mà không nhận được quảng bá thì nó tự động xóa tất cả các route bị lỗi khỏi bảng định tuyến của nó
 - Metric: 
@@ -1161,13 +1223,13 @@ show ipv6 route
 					ip ospf network-type point-to-point
 				```
 			- FULL và 2-Way: đối với DR và BDR thì Router sẽ thiết lập đầy đủ với 2 thiết bị này gửi trực tiếp thông tin định tuyến, còn 2-Way thì không bao giờ trao đổi trực tiếp được mà phải qua trung gian
-### 9.2.2. Exterior Gateway (Định tuyến ngoại vùng)
+### 9.2.3. Exterior Gateway (Định tuyến ngoại vùng)
 - Giao thức điển hình là BGP thường được các nhà mạng trên thế giới sử dụng 
 - Được định tuyến dựa trên các AS với nhau 
 - AS là Autonomous System: là tập hợp các router thuộc cùng 1 chính sách quản trị, cùng thuộc 1 tổ chức thì sẽ được gom vào 1 AS
 	- VD: tất cả các con router của nhà mạng VNPT gom hết thành 1 AS và được định danh bằng số AS
 - Và mỗi AS được định danh bằng 1 số AS, thông thường mỗi nhà cung cấp sẽ có 1 số AS và số AS này là duy nhất trên toàn thế giới
-#### 9.2.2.1. BGP (Border Gateway Protocol)
+#### 9.2.3.1. BGP (Border Gateway Protocol)
 
 <div align="center">
   <img src="Images/image-64.png" width="350" alt="alt text">
@@ -1270,7 +1332,7 @@ Kiến thức nền tảng về ICMP:
   <em></em>
 </div>
 
-	- Mặc định thì ở các thiết bị Cisco, trên các cổng thường cấu hình mặc định là `desirable` còn lại là `auto`
+- Mặc định thì ở các thiết bị Cisco, trên các cổng thường cấu hình mặc định là `desirable` còn lại là `auto`
 	- Định kỳ gửi DTP để thiết lập đường trunk và thiết bị nhận được sẽ hồi đáp về bảng tin DTP này và kết nối giữa 2 sw là trunk 
 	- Tắt giao thức DTP: `switchport nonegotiate` 
 - Giao thức VTP (VLAN Trunking Protocol) đồng bộ hóa thông tin VLAN giữa các switch
@@ -1354,7 +1416,7 @@ Kiến thức an toàn bảo mật liên quan VLAN, hay xuất hiện trong đ�
 ## 12.4. Root Bridge và vai trò Port Role của các Port
 - STP sẽ trải qua 4 giai đoạn để tính toán port nào là block port
 ### 12.4.1. Bầu chọn Root Bridge
-- Root Bridge chỉ có 1 Router làm và tất cả các lưu lượng sẽ đổ hết về RB 
+- **📌 (Sửa lỗi)** Trong toàn bộ hệ thống mạng (1 VLAN), chỉ có **duy nhất 1 Switch** được bầu làm Root Bridge (RB) — bản gốc ghi nhầm là "Router", nhưng STP là giao thức chạy ở tầng 2 giữa các **Switch**, không phải Router
 - Chỉ có RB mới được quyền chủ động gửi bản tin hello, các port còn lại chỉ chuyển tiếp lại
 - Định kỳ gửi hello 2s 1 lần, các port còn lại chuyển tiếp qua designated port để đến được switch láng giềng
 - Nguyên tắc bầu chọn:
@@ -1569,7 +1631,7 @@ NAT là kiến thức quan trọng trong CCNA, chi tiết như sau:
 ACL là kiến thức quan trọng trong CCNA, chi tiết như sau:
 - Là tập hợp các câu lệnh dùng để lọc lưu lượng đi qua Router/Switch dựa trên các tiêu chí như địa chỉ IP nguồn/đích, port, giao thức,... nhằm mục đích bảo mật hoặc điều hướng lưu lượng (ví dụ kết hợp với NAT, route-map)
 - Router sẽ so khớp gói tin với ACL **theo thứ tự từ trên xuống dưới**, khi khớp dòng nào thì dừng lại và áp dụng hành động (permit/deny) của dòng đó, nếu không khớp dòng nào thì mặc định sẽ bị `deny` tất cả (implicit deny)
-## 17.0. Wildcard Mask (tham số bắt buộc phải hiểu trước khi cấu hình ACL)
+## 17.1. Wildcard Mask (tham số bắt buộc phải hiểu trước khi cấu hình ACL)
 - Wildcard Mask có 32 bit giống Subnet Mask nhưng **ý nghĩa ngược lại**:
 	- Bit `0`: bắt buộc phải **khớp chính xác** octet tương ứng của địa chỉ IP tham chiếu
 	- Bit `1`: **bỏ qua**, không cần khớp octet tương ứng (chấp nhận bất kỳ giá trị nào)
@@ -1579,7 +1641,7 @@ ACL là kiến thức quan trọng trong CCNA, chi tiết như sau:
 - Các trường hợp đặc biệt hay gặp:
 	- `host 192.168.1.5` tương đương `192.168.1.5 0.0.0.0` (chỉ khớp chính xác 1 địa chỉ IP duy nhất)
 	- `any` tương đương `0.0.0.0 255.255.255.255` (khớp với mọi địa chỉ IP)
-## 17.1. Standard ACL
+## 17.2. Standard ACL
 - Chỉ lọc được dựa trên **địa chỉ IP nguồn**, dải số hiệu từ `1-99` và `1300-1999`
 - Nên đặt ACL gần với **đích** cần bảo vệ vì nó lọc theo nguồn nên nếu đặt gần nguồn quá sẽ chặn nhầm các lưu lượng khác của nguồn đó
 	```
@@ -1588,7 +1650,7 @@ ACL là kiến thức quan trọng trong CCNA, chi tiết như sau:
 	int f0/0
 		ip access-group 10 in
 	```
-## 17.2. Extended ACL
+## 17.3. Extended ACL
 - Lọc được chi tiết hơn dựa trên: IP nguồn, IP đích, giao thức (tcp/udp/icmp), port nguồn, port đích, dải số hiệu từ `100-199` và `2000-2699`
 - Nên đặt ACL gần với **nguồn** cần lọc để tiết kiệm tài nguyên xử lý trên toàn hệ thống mạng
 	```
@@ -1597,7 +1659,7 @@ ACL là kiến thức quan trọng trong CCNA, chi tiết như sau:
 	int f0/0
 		ip access-group 101 in
 	```
-## 17.3. Named ACL
+## 17.4. Named ACL
 - Thay vì đặt số hiệu thì đặt tên gợi nhớ cho ACL, dễ quản lý và có thể chỉnh sửa/xóa từng dòng riêng lẻ mà không cần xóa toàn bộ ACL
 	```
 	ip access-list extended BLOCK_WEB
