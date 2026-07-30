@@ -43,8 +43,6 @@
 
 	- Ngoài ra còn có các giao thức khác cũng hoạt động ở tầng này: `DNS` (port 53 - phân giải tên miền thành địa chỉ IP), `DHCP` (port 67/68 - cấp phát IP tự động), `Telnet` (port 23)/`SSH` (port 22) (truy cập từ xa)
 
-> **Bảng port quen thuộc hay được hỏi trong đề thi CCNA (bổ sung mới):**
-
 | Giao thức | Port | Transport |
 |---|---|---|
 | FTP (control/data) | 21 / 20 | TCP |
@@ -101,6 +99,17 @@
 - Chỉ có 4 phân lớp như ảnh trên
 - 3 lớp trên cùng gom thành 1 nhóm là Application
 - Mỗi card mạng có 1 địa chỉ mac và các địa chỉ này đều khác nhau trên mỗi card mạng
+
+**OSI vs TCP/IP:**
+
+> | OSI (7 tầng) | TCP/IP (4 tầng) |
+> |---|---|
+> | Application, Presentation, Session | Application |
+> | Transport | Transport |
+> | Network | Internet |
+> | Data Link, Physical | Network Access (Link) |
+>
+> Mô hình TCP/IP là mô hình **thực tế được triển khai** trên internet ngày nay, còn OSI chủ yếu mang tính **tham chiếu lý thuyết** để mô tả và giảng dạy khái niệm.
 
 L3: packet (data, ip)
 L2: frame (data, ethernet)
@@ -206,7 +215,8 @@ L3: packet (data,ip)
 - Ví dụ trong một cuộc điện thoại VoIP mà muốn  thiết lập thì nó vẫn sử dụng TCP rồi nó sẽ chủ động thiết lập 2 luồng UDP: 1 luồng để truyền tín hiệu từ trái sang phải và 1 luồng UDP khác từ phải sang trái 
 - Chứa Port nguồn và Port Đích
 
-## 2.5.Cấu trúc Header quan trọng cần nhớ
+## 2.5. Cấu trúc Header quan trọng cần nhớ
+Phần này bổ sung nội dung các trường (field) quan trọng nhất trong IPv4 Header, TCP Header và UDP Header mà đề thi CCNA hay hỏi.
 
 ### 2.5.1. IPv4 Header (tầng Network)
 - **Version**: phiên bản IP (4 cho IPv4)
@@ -237,7 +247,7 @@ L3: packet (data,ip)
 ## 3.2. MAC (Hexa)
 - Các thiết bị tham gia cùng 1 mạng LAN được định danh với khái niệm là địa chỉ MAC 
 - Mỗi máy tính muốn tham gia vào mạng LAN cần phải có card mạng (NIC) và trên mỗi card mạng có 1 địa chỉ MAC riêng, được **"đốt cứng" (burned-in)** vào phần cứng khi sản xuất
-- Địa chỉ MAC dài **48 bit nhị phân**, được biểu diễn dưới dạng **12 số Hexa**
+- **📌 (Sửa lỗi)**: địa chỉ MAC dài **48 bit nhị phân**, được biểu diễn dưới dạng **12 số Hexa** (không phải "rút gọn thành 4 số nhị phân" như bản gốc — mỗi 4 bit nhị phân tương ứng với đúng 1 số Hexa, nên 48 bit = 12 số Hexa)
 
 <div align="center">
   <img src="Images/image-7.png" width="350" alt="alt text">
@@ -506,7 +516,7 @@ Cấu trúc `IPv4` chia thành 2 phần
 > | A | 1 - 127 | 255.0.0.0 | /8 | 24 |
 > | B | 128 - 191 | 255.255.0.0 | /16 | 16 |
 > | C | 192 - 223 | 255.255.255.0 | /24 | 8 |
->
+
 > Lưu ý: dải `127.x.x.x` tuy về mặt lý thuyết nằm trong lớp A nhưng **không được dùng để đánh địa chỉ cho thiết bị** vì đã được dành riêng làm dải Loopback (xem mục 4.1.5)
 - Chuyển đổi từ `prefix length` thành `subnet mask`
 	- Dựa vào `net-id` để đổi thành prefix length
@@ -564,10 +574,10 @@ Cấu trúc `IPv4` chia thành 2 phần
 
 - Với dãy mạng trên thì ta có dãy địa chỉ từ [0-255] và địa chỉ đầu là net-add và địa chỉ cuối là Broadcast-add và không thể gán 2 địa chỉ ip này cho hệ thống 
 
-- Số lượng địa chỉ IP **thực sự gán được** cho thiết bị trong 1 mạng con luôn là:
-  - **Số host khả dụng = 2^(số bit host) − 2** (trừ đi 1 địa chỉ mạng - network address và 1 địa chỉ quảng bá - broadcast address, vì 2 địa chỉ này không được gán cho thiết bị)
-	- VD: mạng `/24` có 8 bit host -> 2^8 − 2 = **254 host** khả dụng (chứ không phải 256)
-	- VD: mạng `/30` (thường dùng cho kết nối point-to-point giữa 2 router) có 2 bit host -> 2^2 − 2 = **2 host** khả dụng, vừa đủ cho 2 đầu router
+> **⚠️ Quan trọng (Bổ sung công thức còn thiếu)**: Số lượng địa chỉ IP **thực sự gán được** cho thiết bị trong 1 mạng con luôn là:
+> **Số host khả dụng = 2^(số bit host) − 2** (trừ đi 1 địa chỉ mạng - network address và 1 địa chỉ quảng bá - broadcast address, vì 2 địa chỉ này không được gán cho thiết bị)
+> - VD: mạng `/24` có 8 bit host -> 2^8 − 2 = **254 host** khả dụng (chứ không phải 256)
+> - VD: mạng `/30` (thường dùng cho kết nối point-to-point giữa 2 router) có 2 bit host -> 2^2 − 2 = **2 host** khả dụng, vừa đủ cho 2 đầu router
 	
 	<div align="center">
 		<img src="Images/image-25.png" width="350" alt="alt text">
@@ -815,7 +825,7 @@ show ipv6 route
 	- tìm cách gửi bí mật cái mật khẩu này cho R1
 	- Sử dụng mật mã này để mã hóa dữ liệu
 
-> Mô tả trên là cách diễn giải đơn giản hóa để dễ hình dung. Trong thực tế, SSH sử dụng thuật toán trao đổi khóa **Diffie-Hellman (DH)** để 2 bên cùng thống nhất ra 1 khóa phiên (session key) **đối xứng** dùng chung mà không cần truyền trực tiếp khóa đó qua mạng; cặp khóa bất đối xứng RSA của Server chủ yếu dùng để **xác thực danh tính Server** (tránh tấn công Man-in-the-Middle) trong bước bắt tay ban đầu, còn toàn bộ dữ liệu phiên làm việc sau đó được mã hóa bằng khóa đối xứng (AES) vì mã hóa đối xứng có tốc độ xử lý nhanh hơn nhiều so với mã hóa bất đối xứng.
+> **(Bổ sung làm rõ)**: Mô tả trên là cách diễn giải đơn giản hóa để dễ hình dung. Trong thực tế, SSH sử dụng thuật toán trao đổi khóa **Diffie-Hellman (DH)** để 2 bên cùng thống nhất ra 1 khóa phiên (session key) **đối xứng** dùng chung mà không cần truyền trực tiếp khóa đó qua mạng; cặp khóa bất đối xứng RSA của Server chủ yếu dùng để **xác thực danh tính Server** (tránh tấn công Man-in-the-Middle) trong bước bắt tay ban đầu, còn toàn bộ dữ liệu phiên làm việc sau đó được mã hóa bằng khóa đối xứng (AES) vì mã hóa đối xứng có tốc độ xử lý nhanh hơn nhiều so với mã hóa bất đối xứng.
 ## 8.1. Câu lệnh cấu hình
 - Khai báo host name sau đó khai báo ip domain-name 
 	```
@@ -1412,13 +1422,12 @@ Kiến thức an toàn bảo mật liên quan VLAN, hay xuất hiện trong đ�
 - Sử dụng cơ chế block port để hạn chế loop trên hạ tầng mạng
 - Khi STP được bật nó sẽ phối hợp với nhau và tính toán xem nên khóa cổng nào và từ đó tránh được nguy cơ bị loop trên hệ thống mạng, và không thể nhận được tin `broadcast hay bất kì bản tin nào` nên sẽ chống loop được.
 ## 12.4. Root Bridge và vai trò Port Role của các Port
-
 - STP là giao thức chạy ở tầng 2 giữa các **Switch**
 - STP sẽ trải qua 4 giai đoạn để tính toán port nào là block port
 ### 12.4.1. Bầu chọn Root Bridge
-- Trong toàn bộ hệ thống mạng (1 VLAN), chỉ có **duy nhất 1 Switch** được bầu làm Root Bridge (RB)
-- Chỉ có RB mới được quyền chủ động gửi bản tin hello, các port còn lại chỉ chuyển tiếp lại
-- Định kỳ gửi hello 2s 1 lần, các port còn lại chuyển tiếp qua designated port để đến được switch láng giềng
+- **Trong toàn bộ hệ thống mạng (1 VLAN), chỉ có **duy nhất 1 Switch** được bầu làm Root Bridge (RB)
+  - Chỉ có RB mới được quyền chủ động gửi bản tin hello, các port còn lại chỉ chuyển tiếp lại
+  - Định kỳ gửi hello 2s 1 lần, các port còn lại chuyển tiếp qua designated port để đến được switch láng giềng
 - Nguyên tắc bầu chọn:
 	- Dựa vào tham số bridge-id (priority + MAC): sw nào có bridge-id nhỏ nhất thì đóng vai trò RB 
 	- `Show spanning-tree` để kiểm tra 
@@ -1709,6 +1718,7 @@ Về kênh (channel) phát sóng: băng tần 2.4GHz có tổng cộng 11-13 kê
 - **WEP**: chuẩn mã hóa cũ, đã lỗi thời và không còn an toàn
 - **WPA/WPA2**: cải tiến bảo mật hơn WEP, WPA2 sử dụng thuật toán mã hóa AES
 - **WPA3**: chuẩn bảo mật mới nhất hiện nay, khắc phục các lỗ hổng của WPA2
+  - (Bổ sung) WPA2 dùng cơ chế bắt tay `4-Way Handshake` để sinh khóa mã hóa phiên, từng bị phát hiện lỗ hổng `KRACK`; WPA3 thay thế bằng cơ chế `SAE (Simultaneous Authentication of Equals)` an toàn hơn, đồng thời hỗ trợ mã hóa từng phiên riêng biệt ngay cả ở chế độ Personal (tránh nghe lén dù biết được mật khẩu Wi-Fi)
 - **Chế độ xác thực**: `Personal (PSK - Pre-Shared Key)` dùng chung 1 mật khẩu cho tất cả người dùng, phù hợp hộ gia đình/quy mô nhỏ; `Enterprise (802.1X)` xác thực từng người dùng riêng biệt thông qua RADIUS Server, phù hợp doanh nghiệp
 
 # 20. Network Automation & Programmability (Tự động hóa mạng)
@@ -1813,3 +1823,9 @@ Nhóm chủ đề nền tảng về ảo hóa và kiến trúc mạng hiện đ�
 	- **IaaS (Infrastructure as a Service)**: nhà cung cấp cho thuê hạ tầng (máy chủ ảo, lưu trữ, mạng), người dùng tự cài đặt và quản lý hệ điều hành/ứng dụng bên trên (VD: AWS EC2)
 	- **PaaS (Platform as a Service)**: nhà cung cấp quản lý luôn cả hệ điều hành và nền tảng chạy ứng dụng, người dùng chỉ cần tập trung phát triển và triển khai ứng dụng của mình
 	- **SaaS (Software as a Service)**: nhà cung cấp cung cấp sẵn phần mềm hoàn chỉnh qua internet, người dùng chỉ việc sử dụng mà không cần quan tâm đến hạ tầng bên dưới (VD: Gmail, Microsoft 365)
+
+## 25. Lưu ý học tập chung khi ôn thi CCNA 200-301
+- **⚠️ Luôn phân biệt rõ 2 khái niệm dễ nhầm**: Broadcast Domain (ranh giới là Router/Layer 3) và Collision Domain (ranh giới là mỗi port Switch)
+- **⚠️ AD (Administrative Distance) càng thấp càng ưu tiên**, còn **Metric càng thấp càng tốt** trong cùng 1 giao thức định tuyến — đây là 2 khái niệm khác nhau nhưng học viên rất hay nhầm lẫn với nhau
+- **⚠️ Ghi nhớ traffic hướng đi của ACL**: Standard ACL đặt gần đích, Extended ACL đặt gần nguồn
+- Nên thực hành lab trực tiếp trên Packet Tracer/GNS3/EVE-NG song song với lý thuyết để nhớ lâu hơn, đặc biệt với các phần có nhiều bước cấu hình như OSPF, STP, NAT, VLAN/Trunk
