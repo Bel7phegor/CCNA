@@ -1608,33 +1608,47 @@ Kỹ thuật bảo mật đi kèm DHCP, hay được hỏi chung với Port Secu
 		ip dhcp snooping trust
 	```
 
-# 16. NAT (Network Address Translation)
+# 18. NAT (Network Address Translation)
 NAT là kiến thức quan trọng trong CCNA, chi tiết như sau:
 - Kỹ thuật chuyển đổi địa chỉ IP Private thành địa chỉ IP Public (và ngược lại) để các thiết bị trong mạng nội bộ có thể truy cập được internet, đồng thời giúp tiết kiệm địa chỉ IPv4 Public
-## 16.1. Static NAT
+- Ngoài mục tiêu tiết kiệm địa chỉ IPv4 Public, NAT còn giúp tăng thêm 1 lớp bảo vệ cho hệ thống, vì các địa chỉ IP nội bộ (private) không bao giờ xuất hiện trực tiếp trên Internet
+- Ví dụ thực tế: 1 doanh nghiệp có hàng trăm máy tính dùng dải địa chỉ `192.168.x.x` hoặc `10.x.x.x`, đây đều là địa chỉ Private nên không thể định tuyến được trên Internet. Khi nhân viên mở trình duyệt để truy cập website, Router sẽ thay mặt toàn bộ mạng nội bộ, sử dụng địa chỉ IP Public của doanh nghiệp để giao tiếp với Internet, nhờ vậy mà rất nhiều thiết bị bên trong có thể cùng chia sẻ chung 1 hoặc 1 vài địa chỉ IP Public
+## 18.0. Thuật ngữ NAT: Inside Local, Inside Global, Outside Local, Outside Global
+- Để hiểu và đọc được bảng NAT, trước tiên cần phân biệt rõ 2 khái niệm:
+	- **Inside**: các thiết bị thuộc về mạng nội bộ (LAN) của doanh nghiệp
+	- **Outside**: các hệ thống nằm bên ngoài mạng nội bộ, ví dụ như máy chủ web trên Internet
+- Từ 2 khái niệm Inside/Outside kết hợp với Local/Global (địa chỉ nhìn theo góc độ nào), ta có 4 loại địa chỉ thường gặp khi cấu hình và troubleshooting NAT:
+	- **Inside Local**: là địa chỉ IP thật (thường là IP Private) của máy tính trong mạng LAN, đây là địa chỉ mà quản trị viên nhìn thấy khi kiểm tra cấu hình trực tiếp trên chính máy tính đó. VD: `192.168.1.10`
+	- **Inside Global**: khi gói tin từ mạng nội bộ đi ra Internet, Router sẽ dịch địa chỉ Inside Local nói trên thành 1 địa chỉ IP Public, gọi là Inside Global — đây chính là địa chỉ mà các website/máy chủ trên Internet nhìn thấy khi nhận được lưu lượng gửi đến từ phía doanh nghiệp
+	- **Outside Global**: là địa chỉ IP thật của máy chủ/thiết bị nằm ở phía Outside (Internet), đúng theo góc nhìn thật sự của Internet
+	- **Outside Local**: trong 1 số trường hợp đặc biệt, nếu phía Outside cũng đang triển khai NAT thì địa chỉ mà mạng nội bộ nhìn thấy về phía máy chủ ngoài Internet đó có thể khác với địa chỉ thật của nó — địa chỉ nhìn thấy này gọi là Outside Local. Tuy nhiên trong đa số hệ thống doanh nghiệp thông thường (phía Outside không NAT), Outside Local và Outside Global thường trùng nhau nên nhiều quản trị viên hiếm khi để ý đến sự khác biệt này
+- Mẹo để ghi nhớ 4 thuật ngữ trên mà không cần học thuộc định nghĩa: hãy nhìn theo góc nhìn của gói tin
+	- `Inside` luôn là phía mạng nội bộ (doanh nghiệp của mình), `Outside` luôn là phía Internet
+	- `Local` là địa chỉ theo góc nhìn của mạng hiện tại (trước khi bị NAT dịch đi), còn `Global` là địa chỉ mà phía đối diện nhìn thấy hoặc sử dụng (sau khi đã bị NAT dịch)
+- Nắm chắc cách phân biệt 4 khái niệm này sẽ giúp việc đọc bảng NAT, kiểm tra các bản ghi translation (`show ip nat translations`) hay phân tích quá trình xử lý gói tin trên Router trở nên dễ dàng hơn rất nhiều — đây cũng là nền tảng quan trọng trước khi đi vào các kỹ thuật cụ thể như Static NAT, Dynamic NAT, PAT bên dưới
+## 18.1. Static NAT
 - Ánh xạ **cố định 1-1** giữa 1 địa chỉ IP Private và 1 địa chỉ IP Public, thường dùng cho Server cần truy cập từ internet vào
-	```
+```
 	ip nat inside source static 192.168.1.10 203.0.113.10
 	int f0/0
 		ip nat inside
 	int f0/1
 		ip nat outside
-	```
-## 16.2. Dynamic NAT
+```
+## 18.2. Dynamic NAT
 - Ánh xạ động giữa 1 dải địa chỉ Private với 1 dải địa chỉ Public thông qua `access-list`, không cố định địa chỉ nào ánh xạ với địa chỉ nào
-	```
+```
 	access-list 1 permit 192.168.1.0 0.0.0.255
 	ip nat pool PUBLIC_POOL 203.0.113.1 203.0.113.10 netmask 255.255.255.0
 	ip nat inside source list 1 pool PUBLIC_POOL
-	```
-## 16.3. PAT (Port Address Translation) - NAT Overload
+```
+## 18.3. PAT (Port Address Translation) - NAT Overload
 - Cho phép **nhiều địa chỉ IP Private** cùng dùng chung **1 địa chỉ IP Public** duy nhất bằng cách phân biệt các phiên qua số port nguồn, đây là kiểu NAT phổ biến nhất được dùng trong thực tế (router gia đình, doanh nghiệp nhỏ)
-	```
+```
 	access-list 1 permit 192.168.1.0 0.0.0.255
 	ip nat inside source list 1 interface f0/1 overload
-	```
+```
 - Lệnh kiểm tra: `show ip nat translations`, `show ip nat statistics`, `clear ip nat translation *`
-
 # 17. ACL (Access Control List)
 ACL là kiến thức quan trọng trong CCNA, chi tiết như sau:
 - Là tập hợp các câu lệnh dùng để lọc lưu lượng đi qua Router/Switch dựa trên các tiêu chí như địa chỉ IP nguồn/đích, port, giao thức,... nhằm mục đích bảo mật hoặc điều hướng lưu lượng (ví dụ kết hợp với NAT, route-map)
@@ -1644,7 +1658,7 @@ ACL là kiến thức quan trọng trong CCNA, chi tiết như sau:
 	- Bit `0`: bắt buộc phải **khớp chính xác** octet tương ứng của địa chỉ IP tham chiếu
 	- Bit `1`: **bỏ qua**, không cần khớp octet tương ứng (chấp nhận bất kỳ giá trị nào)
 - Cách tính nhanh: `Wildcard Mask = 255.255.255.255 - Subnet Mask`
-	- VD: mạng `192.168.1.0/24` có Subnet Mask `255.255.255.255`, Wildcard tương ứng = `255.255.255.255 - 255.255.255.0 = 0.0.0.255`
+	- VD: mạng `192.168.1.0/24` có Subnet Mask `255.255.255.0`, Wildcard tương ứng = `255.255.255.255 - 255.255.255.0 = 0.0.0.255`
 	- VD: mạng `192.168.1.0/26` có Subnet Mask `255.255.255.192`, Wildcard tương ứng = `255.255.255.255 - 255.255.255.192 = 0.0.0.63`
 - Các trường hợp đặc biệt hay gặp:
 	- `host 192.168.1.5` tương đương `192.168.1.5 0.0.0.0` (chỉ khớp chính xác 1 địa chỉ IP duy nhất)
@@ -1676,9 +1690,67 @@ ACL là kiến thức quan trọng trong CCNA, chi tiết như sau:
 	```
 - Lệnh kiểm tra: `show access-lists`, `show ip interface` (để xem ACL nào đang áp trên cổng)
 
-# 18. Port Security
+# 22. Port Security
 Port Security là kiến thức quan trọng trong CCNA, cụ thể:
-- Tính năng bảo mật trên switch giúp giới hạn và kiểm soát địa chỉ MAC nào được phép truy cập vào 1 port, tránh việc kẻ tấn công gắn thêm switch/thiết bị lạ vào hệ thống
+- Tính năng bảo mật ở tầng Layer 2 trên switch giúp giới hạn và kiểm soát địa chỉ MAC nào được phép truy cập vào 1 port, tránh việc kẻ tấn công gắn thêm switch/thiết bị lạ vào hệ thống. Ví dụ điển hình: nếu không có Port Security, ai đó chỉ cần cắm 1 laptop cá nhân vào ổ mạng trống trong văn phòng là có thể truy cập được vào mạng nội bộ ngay lập tức
+- Với Port Security, quản trị viên có thể: chỉ định chính xác địa chỉ MAC nào được phép sử dụng 1 cổng, giới hạn số lượng thiết bị tối đa trên mỗi cổng, và tự động phát hiện + xử lý khi có thiết bị lạ cố truy cập
+- Các địa chỉ MAC được phép gọi là **Secure MAC Address**. Mỗi khi có 1 frame đi vào switch, Port Security sẽ kiểm tra Source MAC Address của frame đó: nếu là Secure MAC hợp lệ thì lưu lượng được chuyển tiếp bình thường, nếu không thì switch sẽ coi đây là 1 **Security Violation (vi phạm bảo mật)**
+## 22.1. Security Violation xảy ra khi nào?
+- Xuất hiện 1 địa chỉ MAC mới trên cổng sau khi cổng đó đã học đủ số lượng Secure MAC tối đa cho phép (VD: cổng chỉ cho phép 1 MAC Address nhưng người dùng lại cắm thêm 1 switch mini hoặc hub phía sau, làm xuất hiện nhiều MAC khác nhau trên cùng 1 cổng)
+- Một Secure MAC Address đã được học trên 1 cổng lại bất ngờ xuất hiện trên 1 cổng bảo mật khác trong cùng VLAN (dấu hiệu của việc di chuyển thiết bị trái phép hoặc giả mạo MAC)
+## 22.2. Ba chế độ xử lý khi có Security Violation
+### 22.2.1. Shutdown (mặc định)
+- Là chế độ nghiêm ngặt nhất, khi phát hiện vi phạm:
+	- Interface sẽ chuyển ngay sang trạng thái `err-disabled`
+	- Toàn bộ lưu lượng trên cổng đó bị chặn hoàn toàn, không riêng gì lưu lượng từ MAC vi phạm
+	- Quản trị viên phải chủ động thao tác `shutdown` -> `no shutdown` để khôi phục cổng, hoặc cấu hình thêm cơ chế tự khôi phục (`errdisable recovery`) nếu muốn cổng tự bật lại sau 1 khoảng thời gian
+	- Đây là lựa chọn phổ biến nhất cho các cổng kết nối người dùng trong môi trường doanh nghiệp vì tính an toàn cao
+### 22.2.2. Protect
+- Cổng vẫn tiếp tục hoạt động bình thường
+- Chỉ có frame đến từ MAC không hợp lệ mới bị loại bỏ (drop), lưu lượng từ các MAC hợp lệ khác trên cổng đó không bị ảnh hưởng
+- Không ghi log và không tăng bộ đếm vi phạm, do đó khó theo dõi được lịch sử vi phạm
+### 22.2.3. Restrict
+- Hoạt động tương tự Protect (cổng vẫn chạy, chỉ drop frame vi phạm) nhưng có thêm khả năng giám sát: switch sẽ ghi log và tăng bộ đếm Security Violation mỗi khi có vi phạm xảy ra
+- Vì vừa bảo vệ được hệ thống vừa hỗ trợ giám sát/theo dõi nên Restrict thường được nhiều quản trị viên lựa chọn thay cho Protect
+## 22.3. Các cách tạo Secure MAC Address
+- Theo mặc định, mỗi cổng chỉ cho phép 1 Secure MAC Address, có thể tăng giới hạn này lên bằng lệnh:
+```
+	switchport port-security maximum 5
+```
+- Secure MAC Address có thể được thiết lập theo 3 cách:
+	- **Static**: quản trị viên cấu hình thủ công trực tiếp địa chỉ MAC được phép, phù hợp với các thiết bị cố định quan trọng như Server, Camera IP, máy in
+```
+		switchport port-security mac-address 0011.2233.4455
+```
+	- **Dynamic**: switch tự động học địa chỉ MAC đầu tiên xuất hiện trên cổng, cách này đơn giản, không cần cấu hình tay nhưng có nhược điểm là MAC học được sẽ **bị mất sau khi switch khởi động lại** nếu chưa được lưu vào running-config
+	- **Kết hợp Static và Dynamic**: cấu hình tay trước 1 số MAC quan trọng, phần còn lại để switch tự học, miễn tổng số MAC không vượt quá giá trị `maximum` đã cấu hình
+### 22.3.1. Sticky MAC - tự học và tự lưu cấu hình
+- Là chế độ được sử dụng phổ biến nhất trong thực tế, kết hợp ưu điểm của cả Static (giữ được cấu hình sau khi khởi động lại) và Dynamic (không cần nhập tay từng MAC)
+```
+	switchport port-security mac-address sticky
+```
+- Khi có 1 MAC Address mới xuất hiện trên cổng, switch sẽ tự động học địa chỉ đó và **tự động thêm vào running-config** dưới dạng 1 dòng lệnh cụ thể, ví dụ:
+```
+	switchport port-security mac-address sticky 1234.0000.c011
+```
+- Nếu sau đó lưu cấu hình bằng `copy running-config startup-config`, các Sticky MAC này vẫn được giữ nguyên sau khi switch khởi động lại — nhờ vậy quản trị viên không cần nhập thủ công từng MAC Address nhưng cổng vẫn được "khóa" lại ngay sau lần kết nối đầu tiên
+## 22.4. Cấu hình cơ bản
+```
+int f0/1
+	switchport mode access
+	switchport port-security
+	switchport port-security maximum 2
+	switchport port-security mac-address sticky
+	switchport port-security violation shutdown
+```
+- `maximum`: số lượng địa chỉ MAC tối đa được học trên port (mặc định là 1)
+- `mac-address sticky`: tự động học địa chỉ MAC đầu tiên kết nối vào port và lưu vào running-config
+- `violation`: hành động khi có vi phạm (MAC lạ kết nối vào hoặc vượt quá số lượng cho phép) - chi tiết 3 chế độ đã trình bày ở mục 22.2
+- Lệnh kiểm tra: `show port-security`, `show port-security address`
+## 22.5. Khi nào nên áp dụng Port Security?
+- Nên áp dụng trên các cổng kết nối trực tiếp đến thiết bị đầu cuối cố định, số lượng MAC ít và có thể dự đoán trước, ví dụ: máy tính người dùng, điện thoại IP, máy in, camera IP, thiết bị IoT, máy POS hoặc ATM
+- Ngược lại, **không nên** áp dụng Port Security trên các cổng trunk hoặc cổng uplink giữa các switch với nhau, vì những cổng này thường phải mang lưu lượng của rất nhiều địa chỉ MAC khác nhau cùng lúc, dễ gây ra Security Violation ngoài ý muốn
+- Port Security tuy là 1 tính năng khá đơn giản để cấu hình nhưng vẫn là 1 lớp bảo vệ hiệu quả ở Layer 2. Khi được kết hợp thêm với các kỹ thuật khác như `802.1X` (xác thực thiết bị/người dùng trước khi cho vào mạng), `DHCP Snooping` (đã trình bày ở mục 17.4), `Dynamic ARP Inspection - DAI` (chống giả mạo ARP) và `IP Source Guard` (chống giả mạo địa chỉ IP nguồn), hệ thống sẽ được bảo vệ tốt hơn rất nhiều, ngăn chặn thiết bị trái phép truy cập mạng ngay từ chính cổng switch đầu tiên
 ## 18.1. Cấu hình cơ bản
 ```
 int f0/1
